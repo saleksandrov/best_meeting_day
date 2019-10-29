@@ -11,6 +11,7 @@ class TestFluxService {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = ["/get"], method = [RequestMethod.GET])
+    @ResponseBody
     fun test(): Mono<String> {
         return Mono.just("TEST")
     }

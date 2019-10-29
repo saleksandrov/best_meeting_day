@@ -4,3 +4,6 @@ server:
 spring:
   application:
     name: bmd-base
+  main:
+    allow-bean-definition-overriding: true
+
