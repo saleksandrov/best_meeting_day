@@ -61,7 +61,7 @@ class BmdApp extends Component {
             </div>
 
             <div>
-                <label>Имя:
+                <label>Имя создателя голосования:
                    <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
                 </label>
                 <input type="submit" value="Создать" />
