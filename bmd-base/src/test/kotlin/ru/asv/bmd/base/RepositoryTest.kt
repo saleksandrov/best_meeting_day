@@ -14,8 +14,7 @@ import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.service.VoteService
 import java.util.*
 
-//@Import(MongoConfig::class)
-//@SpringBootTest
+@Import(TestConfig::class)
 @RunWith(SpringRunner::class)
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [BaseApplication::class])
 @DataMongoTest
