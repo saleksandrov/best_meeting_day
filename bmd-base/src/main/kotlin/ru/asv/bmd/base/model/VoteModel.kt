@@ -10,10 +10,10 @@ data class VoteInfo(
         val endDate: Date,
         val creator: String,
         val bestDates: List<Date>,
-        val votes: List<Vote>
+        val votes: MutableList<Vote>
 ) {
     @Id
-    var id: Int = 0
+    var id: String = ""
 }
 
 @Document
@@ -22,5 +22,12 @@ data class Vote(
     val bestDates: List<Date>
 ) {
     @Id
-    var id: Int = 0
+    var id: String = ""
 }
+
+data class VoteResult(
+    val bestDay: Date,
+    val bestDayVoters: MutableList<String>,
+    val bestDayWithCreator: Date,
+    val bestDayWithCreatorVoters: MutableList<String>
+)

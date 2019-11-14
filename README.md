@@ -54,13 +54,15 @@
 `
 {
    "voteId": 123,
-   "bestDay": "2019-11-01"
-   "bestDayWithCreator": "2019-11-02"
+   "bestDay": "2019-11-01",
+   "bestDayVoters": ["Dmitry", "Alexey" ... ],
+   "bestDayWithCreator": "2019-11-02",
+   "bestDayWithCreatorVoters": ["Dmitry", "Alexey" ...]
 }
 `
 
 #### /vote/showVotesByDate Показать список проголосовавших
-
+(Кандидат на удаление)
 `
 {
    "voteId": 123 
