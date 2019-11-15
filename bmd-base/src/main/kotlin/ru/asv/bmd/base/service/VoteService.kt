@@ -7,7 +7,8 @@ import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.model.VoteResult
 import ru.asv.bmd.base.repository.VoteRepository
-import java.util.*
+import java.lang.RuntimeException
+import java.time.LocalDate
 
 @Service
 class VoteService {
@@ -20,15 +21,18 @@ class VoteService {
     }
 
     fun addVote(id: String, vote: Vote): Mono<VoteInfo> {
-        return vr.findById(id).block().let { vi ->
+        return vr.findById(id).block()?.let { vi ->
             vi.votes.add(vote)
             vr.save(vi)
+        } ?: run {
+            // TODO change to custom exception
+            throw RuntimeException("")
         }
     }
 
     fun getBestDates(id: String): VoteResult {
-        val bestDates = mutableMapOf<Date, MutableList<String>>()
-        vr.findById(id).block().let { vi ->
+        val bestDates = mutableMapOf<LocalDate, MutableList<String>>()
+        vr.findById(id).block()?.let { vi ->
             vi.votes.forEach { vote ->
                 vote.bestDates.forEach { date ->
                     bestDates.getOrElse(date) {
@@ -39,7 +43,7 @@ class VoteService {
         }
         // TODO calculate best date
 
-        return VoteResult(Date(), mutableListOf(), Date(), mutableListOf())
+        return VoteResult(LocalDate.now(), mutableListOf(), LocalDate.now(), mutableListOf())
     }
 
 }
