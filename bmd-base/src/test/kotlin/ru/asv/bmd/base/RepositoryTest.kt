@@ -21,7 +21,7 @@ class RepositoryTest {
 
     @Test
     fun testCreate() {
-        val createdEntity = vs.create(VoteInfo(LocalDate.now(), LocalDate.now(), "Test Creator", emptyList(), mutableListOf()))
+        val createdEntity = vs.create(VoteInfo(LocalDate.now(), LocalDate.now(), "Test Creator"))
         assertTrue(createdEntity.block() != null)
     }
 

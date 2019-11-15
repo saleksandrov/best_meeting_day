@@ -29,14 +29,16 @@ open class WebFluxConfig : WebFluxConfigurer {
         val cacheControl = CacheControl.noCache()
         val resourceChain = false
 
-        //registry.addResourceHandler("/ui/static/**")
-        //        .addResourceLocations("classpath:/ui/public/static/")
-        //        .setCacheControl(cacheControl)
-        //        .resourceChain(resourceChain)
-
         registry.addResourceHandler("/ui/**")
                 .addResourceLocations("classpath:/ui/public/")
                 .setCacheControl(cacheControl)
                 .resourceChain(resourceChain)
+
+        //registry.addResourceHandler("swagger-ui.html")
+        //        .addResourceLocations("classpath:/META-INF/resources/");
+
+        //registry.addResourceHandler("/webjars/**")
+        //        .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
     }
 }

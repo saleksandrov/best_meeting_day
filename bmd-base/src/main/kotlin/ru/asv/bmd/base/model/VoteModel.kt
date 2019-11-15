@@ -9,21 +9,26 @@ import java.time.LocalDate
 data class VoteInfo(
         @JsonFormat(pattern = "dd-MM-yyyy") val startDate: LocalDate,
         @JsonFormat(pattern = "dd-MM-yyyy") val endDate: LocalDate,
-        val creator: String,
-        @JsonFormat(pattern = "dd-MM-yyyy") val bestDates: List<LocalDate>,
-        val votes: MutableList<Vote>
+        val creator: String
+
 ) {
     @Id
     var id: String = ""
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     val creationDate: LocalDate = LocalDate.now()
+
+    // TODO don't work with Swagger
+    //@JsonFormat(pattern = "dd-MM-yyyy")
+    //val bestDatesForCreator: MutableList<LocalDate> = mutableListOf()
+
+    val votes: MutableList<Vote> = mutableListOf()
 }
 
 @Document
 data class Vote(
     val author: String,
-    @JsonFormat(pattern = "dd-MM-yyyy") val bestDates: List<LocalDate>
+    @JsonFormat(pattern = "dd-MM-yyyy") val bestDates: MutableList<LocalDate>
 ) {
     @Id
     var id: String = ""
