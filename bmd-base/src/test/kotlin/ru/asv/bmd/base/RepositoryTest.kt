@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit4.SpringRunner
 import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.service.VoteService
-import java.util.*
+import java.time.LocalDate
 
 @Import(TestConfig::class)
 @RunWith(SpringRunner::class)
@@ -21,7 +21,7 @@ class RepositoryTest {
 
     @Test
     fun testCreate() {
-        val createdEntity = vs.create(VoteInfo(Date(), Date(), "Test Creator", emptyList(), mutableListOf()))
+        val createdEntity = vs.create(VoteInfo(LocalDate.now(), LocalDate.now(), "Test Creator", emptyList(), mutableListOf()))
         assertTrue(createdEntity.block() != null)
     }
 

@@ -9,4 +9,5 @@ open class TestConfig {
 
     @Bean
     open fun voteService() = VoteService()
+
 }

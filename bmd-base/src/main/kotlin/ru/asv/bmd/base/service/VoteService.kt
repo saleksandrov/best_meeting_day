@@ -13,24 +13,24 @@ import java.util.*
 class VoteService {
 
     @Autowired
-    lateinit var vr : VoteRepository
+    lateinit var vr: VoteRepository
 
-    fun create(vi: VoteInfo) : Mono<VoteInfo> {
+    fun create(vi: VoteInfo): Mono<VoteInfo> {
         return vr.save(vi)
     }
 
-    fun addVote(id: String, vote: Vote) : Mono<VoteInfo> {
-        return vr.findById(id).block().let {
-            it.votes.add(vote)
-            vr.save(it)
+    fun addVote(id: String, vote: Vote): Mono<VoteInfo> {
+        return vr.findById(id).block().let { vi ->
+            vi.votes.add(vote)
+            vr.save(vi)
         }
     }
 
-    fun getBestDates(id: String) : VoteResult {
+    fun getBestDates(id: String): VoteResult {
         val bestDates = mutableMapOf<Date, MutableList<String>>()
-        vr.findById(id).block().let {vi ->
-            vi.votes.forEach {vote ->
-                vote.bestDates.forEach{date ->
+        vr.findById(id).block().let { vi ->
+            vi.votes.forEach { vote ->
+                vote.bestDates.forEach { date ->
                     bestDates.getOrElse(date) {
                         mutableListOf()
                     }.add(vote.author)
