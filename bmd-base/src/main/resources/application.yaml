@@ -6,8 +6,11 @@ spring:
     name: bmd-base
   main:
     allow-bean-definition-overriding: true
+  #webflux:
+  #  date-format: dd.MM.yyyy
 
 bmd:
+  #date-format: dd.MM.yyyy
   db:
     port: 27017
     dbname: bmdbase
