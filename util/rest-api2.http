@@ -1,0 +1,9 @@
+GET http://localhost:8080/vote/getBestDates?id=123
+Accept: application/json
+Cache-Control: no-cache
+
+
+<> 2019-11-19T010513.400.json
+
+###
+
