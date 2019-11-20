@@ -42,7 +42,7 @@ class VoteService {
         }*/
         // TODO calculate best date
 
-        return VoteResult(LocalDate.now(), mutableListOf(), LocalDate.now(), mutableListOf())
+        return VoteResult()
     }
 
 }

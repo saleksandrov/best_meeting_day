@@ -6,12 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
 @Document
-data class VoteInfo(
-        @JsonFormat(pattern = "dd.MM.yyyy") val startDate: LocalDate,
-        @JsonFormat(pattern = "dd.MM.yyyy") val endDate: LocalDate,
-        val creator: String
+class VoteInfo {
 
-) {
     @Id
     var id: String = ""
 
@@ -22,26 +18,40 @@ data class VoteInfo(
     val bestDatesForCreator: MutableList<LocalDate> = mutableListOf()
 
     val votes: MutableList<Vote> = mutableListOf()
+
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    var startDate: LocalDate = LocalDate.now()
+
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    var endDate: LocalDate = LocalDate.now()
+
+    val creator: String = ""
+
 }
 
 @Document
-data class Vote(
-    val author: String,
-    @JsonFormat(pattern = "dd.MM.yyyy") val bestDates: MutableList<LocalDate>
-) {
+class Vote {
+
     @Id
     var id: String = ""
+
+    var author: String = ""
+
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    val bestDates: MutableList<LocalDate> = mutableListOf()
+
 }
 
-data class VoteResult(
+class VoteResult {
 
-        @JsonFormat(pattern = "dd.MM.yyyy")
-        val bestDay: LocalDate,
+    @JsonFormat(pattern = "dd.MM.yyyy")
+    var bestDay: LocalDate = LocalDate.now()
 
-        val bestDayVoters: MutableList<String>,
+    var bestDayVoters: MutableList<String> = mutableListOf()
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-        val bestDayWithCreator: LocalDate,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    var bestDayWithCreator: LocalDate = LocalDate.now()
 
-        val bestDayWithCreatorVoters: MutableList<String>
-)
+    var bestDayWithCreatorVoters: MutableList<String> = mutableListOf()
+
+}

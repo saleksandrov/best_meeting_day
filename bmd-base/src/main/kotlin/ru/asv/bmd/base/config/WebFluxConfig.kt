@@ -17,9 +17,6 @@ import org.springframework.web.reactive.config.WebFluxConfigurer
 @EnableWebFlux
 open class WebFluxConfig : WebFluxConfigurer {
 
-    //@Value("\${bmd.date-format}")
-    //private lateinit var datePattern: String
-
     @Bean
     open fun jackson2JsonEncoder(mapper: ObjectMapper): Jackson2JsonEncoder {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
@@ -31,21 +28,6 @@ open class WebFluxConfig : WebFluxConfigurer {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         return Jackson2JsonDecoder(mapper)
     }
-
-    /*override fun addFormatters(registry: FormatterRegistry) {
-        super.addFormatters(registry)
-
-        registry.addFormatter(object : Formatter<LocalDate> {
-            val formatter: DateTimeFormatter = ofPattern(datePattern)
-            override fun print(ld: LocalDate, locale: Locale): String {
-                return ld.format(formatter)
-            }
-            override fun parse(text: String, locale: Locale): LocalDate {
-                return LocalDate.parse(text, formatter)
-            }
-        })
-
-    }*/
 
     @Bean
     open fun webFluxConfigurer(encoder: Jackson2JsonEncoder, decoder: Jackson2JsonDecoder): WebFluxConfigurer {
