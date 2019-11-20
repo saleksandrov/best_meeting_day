@@ -1,0 +1,11 @@
+POST http://localhost:8080/vote/start
+Accept: application/json
+Cache-Control: no-cache
+Content-Type: application/json
+
+{"startDate": "01.11.2019", "endDate": "01.12.2019","creator": "Sergey Aleksandrov","bestDatesForCreator": ["11.01.2019"]}
+
+<> 2019-11-19T010513.400.json
+
+###
+
