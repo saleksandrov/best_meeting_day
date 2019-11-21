@@ -1,0 +1,8 @@
+POST http://localhost:8080/vote/add/5dd64d093c867231c436e700
+Accept: application/json
+Cache-Control: no-cache
+Content-Type: application/json
+
+{"author": "Ivan Ivanov","bestDates": ["11.11.2019", "12.11.2019"]}
+
+###

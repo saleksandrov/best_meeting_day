@@ -19,7 +19,6 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = ["/start"], method = [RequestMethod.POST])
-    //fun startVote(serverWebExchange: ServerWebExchange ): Mono<VoteInfo> {
     fun startVote(@RequestBody vi: VoteInfo) : Mono<VoteInfo> {
         log.info("Starting vote ${vi}")
         // TODO add validation
@@ -29,15 +28,16 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = ["/add"], method = [RequestMethod.POST])
-    fun addVote(@RequestParam id: String, @RequestParam vote: Vote): Mono<VoteInfo> {
+    @RequestMapping(value = ["/add/{id}"], method = [RequestMethod.POST])
+    fun addVote(@PathVariable id: String, @RequestBody vote: Vote): Mono<Vote> {
         // TODO add validation
-        return vs.addVote(id , vote)
+        vs.addVote(id , vote)
+        return Mono.just(vote)
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = ["/getBestDates"], method = [RequestMethod.GET])
-    fun getBestDates(@RequestParam id: String): Mono<VoteResult> {
+    @RequestMapping(value = ["/getBestDates/{id}"], method = [RequestMethod.GET])
+    fun getBestDates(@PathVariable id: String): Mono<VoteResult> {
         // TODO add validation
         return Mono.just(vs.getBestDates(id))
     }

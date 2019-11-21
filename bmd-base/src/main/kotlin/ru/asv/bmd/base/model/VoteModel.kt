@@ -9,15 +9,15 @@ import java.time.LocalDate
 class VoteInfo {
 
     @Id
-    var id: String = ""
+    var id: String? = null
 
     @JsonFormat(pattern = "dd.MM.yyyy")
-    val creationDate: LocalDate = LocalDate.now()
+    var creationDate: LocalDate = LocalDate.now()
 
     @JsonFormat(pattern = "dd.MM.yyyy")
-    val bestDatesForCreator: MutableList<LocalDate> = mutableListOf()
+    var bestDatesForCreator: MutableList<LocalDate> = mutableListOf()
 
-    val votes: MutableList<Vote> = mutableListOf()
+    var votes: MutableList<Vote> = mutableListOf()
 
     @JsonFormat(pattern = "dd.MM.yyyy")
     var startDate: LocalDate = LocalDate.now()
@@ -25,15 +25,12 @@ class VoteInfo {
     @JsonFormat(pattern = "dd.MM.yyyy")
     var endDate: LocalDate = LocalDate.now()
 
-    val creator: String = ""
+    var creator: String = ""
 
 }
 
 @Document
 class Vote {
-
-    @Id
-    var id: String = ""
 
     var author: String = ""
 

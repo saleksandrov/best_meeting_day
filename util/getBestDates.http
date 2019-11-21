@@ -1,4 +1,4 @@
-GET http://localhost:8080/vote/getBestDates?id=123
+GET http://localhost:8080/vote/getBestDates/5dd64d093c867231c436e700
 Accept: application/json
 Cache-Control: no-cache
 
