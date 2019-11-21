@@ -35,7 +35,7 @@ class Vote {
     var author: String = ""
 
     @JsonFormat(pattern = "dd.MM.yyyy")
-    val bestDates: MutableList<LocalDate> = mutableListOf()
+    var bestDates: MutableList<LocalDate> = mutableListOf()
 
 }
 
