@@ -24,32 +24,47 @@ class VoteService {
                 doOnError { ex -> log.error("Cannot save vote to DB ", ex)  }
     }
 
-    fun addVote(id: String, vote: Vote): Mono<VoteInfo> {
-        return vr.findById(id).flatMap { vi ->
-            vi.votes.add(vote)
-            vr.save(vi)
-        }
+    fun addVote(id: String, vote: Vote) {
+        var vi = vr.findById(id).block()
+        vi.votes.add(vote)
+        vr.save(vi).subscribe()
+    }
+
+    fun getVote(id: String): Mono<VoteInfo>  {
+        return vr.findById(id)
     }
 
     fun getBestDates(id: String): VoteResult {
         val authorsResultMap = mutableMapOf<LocalDate, MutableList<String>>()
+        val withCreatorResultMap = mutableMapOf<LocalDate, MutableList<String>>()
         vr.findById(id).doOnSuccess { vi ->
+            val creatorDatesMap = vi.bestDatesForCreator.map { Pair(it, "") }.toMap()
             vi.votes.forEach { vote ->
                 vote.bestDates.forEach { date ->
-                    authorsResultMap.getOrElse(date) {
+                    authorsResultMap.getOrPut(date) {
                         mutableListOf()
                     }.add(vote.author)
+                    if (creatorDatesMap.containsKey(date)) {
+                        withCreatorResultMap.getOrPut(date) {
+                            mutableListOf()
+                        }.add(vote.author)
+                    }
                 }
             }
             log.info("Found author dates ${authorsResultMap.size} ${authorsResultMap}")
-        }.subscribe()
+        }.block()
 
         val maxResult = authorsResultMap.maxBy { it.value.size }
         log.info("Max result ${maxResult}")
 
+        val maxCreatorResult = withCreatorResultMap.maxBy { it.value.size }
+        log.info("Max result ${maxCreatorResult}")
+
         return VoteResult().apply {
-            bestDay = maxResult!!.key
-            bestDayVoters = maxResult.value
+            bestDay = maxResult?.key
+            bestDayVoters = maxResult?.value ?: mutableListOf()
+            bestDayWithCreator = maxCreatorResult?.key
+            bestDayWithCreatorVoters = maxCreatorResult?.value ?: mutableListOf()
         }
     }
 

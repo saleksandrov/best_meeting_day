@@ -42,12 +42,12 @@ class Vote {
 class VoteResult {
 
     @JsonFormat(pattern = "dd.MM.yyyy")
-    var bestDay: LocalDate = LocalDate.now()
+    var bestDay: LocalDate? = null
 
     var bestDayVoters: MutableList<String> = mutableListOf()
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    var bestDayWithCreator: LocalDate = LocalDate.now()
+    var bestDayWithCreator: LocalDate? = null
 
     var bestDayWithCreatorVoters: MutableList<String> = mutableListOf()
 

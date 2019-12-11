@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit4.SpringRunner
+import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.service.VoteService
 import java.time.LocalDate
@@ -20,9 +21,91 @@ class RepositoryTest {
     lateinit var vs : VoteService
 
     @Test
-    fun testCreate() {
-        val createdEntity = vs.create(VoteInfo(LocalDate.now(), LocalDate.now(), "Test Creator"))
-        assertTrue(createdEntity.block() != null)
+    fun testCreateSimple() {
+        val vi = buildVoteInfo()
+        val voteGuid = createAndCheck(vi)
+
+        val vote1 = Vote().apply {
+            author = "Author 1"
+            bestDates = mutableListOf(LocalDate.now().plusDays(2), LocalDate.now().plusDays(3))
+        }
+        val vote2 = Vote().apply {
+            author = "Author 2"
+            bestDates = mutableListOf(LocalDate.now().plusDays(2))
+        }
+        if (voteGuid != null) {
+            vs.addVote(voteGuid, vote1)
+            vs.addVote(voteGuid, vote2)
+            val bestDates = vs.getBestDates(voteGuid)
+            assertTrue(bestDates.bestDay!!.equals(vote2.bestDates.first()))
+            assertTrue(bestDates.bestDayVoters.containsAll(listOf(vote1.author, vote2.author)))
+        }
+
     }
+
+    @Test
+    fun testCreateFull() {
+        val vi = buildVoteInfo()
+        val voteGuid = createAndCheck(vi)
+
+        val vote1 = Vote().apply {
+            author = "Author 1"
+            bestDates = mutableListOf(LocalDate.now().plusDays(2), LocalDate.now().plusDays(3), LocalDate.now().plusDays(4))
+        }
+        val vote2 = Vote().apply {
+            author = "Author 2"
+            bestDates = mutableListOf(LocalDate.now().plusDays(2), LocalDate.now().plusDays(3), LocalDate.now().plusDays(5) )
+        }
+        val vote3 = Vote().apply {
+            author = "Author 3"
+            bestDates = mutableListOf(LocalDate.now().plusDays(2), LocalDate.now().plusDays(4))
+        }
+
+        val vote4 = Vote().apply {
+            author = "Author 4"
+            bestDates = mutableListOf(LocalDate.now().plusDays(3), LocalDate.now().plusDays(5))
+        }
+        val vote5 = Vote().apply {
+            author = "Author 5"
+            bestDates = mutableListOf(LocalDate.now().plusDays(2), LocalDate.now().plusDays(5))
+        }
+
+        if (voteGuid != null) {
+            vs.addVote(voteGuid, vote1)
+            vs.addVote(voteGuid, vote2)
+            vs.addVote(voteGuid, vote3)
+            vs.addVote(voteGuid, vote4)
+            vs.addVote(voteGuid, vote5)
+
+            val bestDates = vs.getBestDates(voteGuid)
+            assertTrue(bestDates.bestDay!!.equals(vote2.bestDates.first()))
+            assertTrue(bestDates.bestDayVoters.containsAll(listOf(vote1.author, vote2.author)))
+            assertTrue(bestDates.bestDayWithCreator!!.equals(vote5.bestDates.last()))
+
+        }
+
+    }
+
+
+    private fun createAndCheck(vi: VoteInfo): String? {
+        val createdEntity = vs.create(vi)
+        val createVi = createdEntity.block()
+        assertTrue(createVi != null)
+        val voteGuid = createVi.id
+        assertTrue(voteGuid != null)
+        return voteGuid
+    }
+
+    private fun buildVoteInfo(): VoteInfo {
+        return VoteInfo().apply {
+            creationDate = LocalDate.now()
+            startDate = creationDate.plusDays(1)
+            endDate = creationDate.plusDays(10)
+            creationDate = startDate
+            creator = "Some Creator"
+            bestDatesForCreator = mutableListOf(LocalDate.now().plusDays(5))
+        }
+    }
+
 
 }
