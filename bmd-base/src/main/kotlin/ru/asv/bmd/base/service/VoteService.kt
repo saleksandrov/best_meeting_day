@@ -24,10 +24,18 @@ class VoteService {
                 doOnError { ex -> log.error("Cannot save vote to DB ", ex)  }
     }
 
-    fun addVote(id: String, vote: Vote) {
-        var vi = vr.findById(id).block()
-        vi.votes.add(vote)
-        vr.save(vi).subscribe()
+    fun addVote(id: String, vote: Vote): Mono<VoteInfo> {
+        // Sync block
+        //var vi = vr.findById(id).block()
+        //vi.votes.add(vote)
+        //vr.save(vi).subscribe()
+
+        // Async block
+        return vr.findById(id).flatMap { vi ->
+            vi.votes.add(vote)
+            vr.save(vi)
+        }
+
     }
 
     fun getVote(id: String): Mono<VoteInfo>  {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit4.SpringRunner
+import reactor.test.StepVerifier
 import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.service.VoteService
@@ -34,8 +35,12 @@ class RepositoryTest {
             bestDates = mutableListOf(LocalDate.now().plusDays(2))
         }
         if (voteGuid != null) {
-            vs.addVote(voteGuid, vote1)
-            vs.addVote(voteGuid, vote2)
+            val v1 = vs.addVote(voteGuid, vote1)
+            val v2 = vs.addVote(voteGuid, vote2)
+
+            StepVerifier.create(v1).expectNextMatches{ it.votes.size > 0 }.verifyComplete()
+            StepVerifier.create(v2).expectNextMatches{ it.votes.size > 0 }.verifyComplete()
+
             val bestDates = vs.getBestDates(voteGuid)
             assertTrue(bestDates.bestDay!!.equals(vote2.bestDates.first()))
             assertTrue(bestDates.bestDayVoters.containsAll(listOf(vote1.author, vote2.author)))
@@ -71,11 +76,17 @@ class RepositoryTest {
         }
 
         if (voteGuid != null) {
-            vs.addVote(voteGuid, vote1)
-            vs.addVote(voteGuid, vote2)
-            vs.addVote(voteGuid, vote3)
-            vs.addVote(voteGuid, vote4)
-            vs.addVote(voteGuid, vote5)
+            val v1 = vs.addVote(voteGuid, vote1)
+            val v2 = vs.addVote(voteGuid, vote2)
+            val v3 = vs.addVote(voteGuid, vote3)
+            val v4 = vs.addVote(voteGuid, vote4)
+            val v5 = vs.addVote(voteGuid, vote5)
+
+            StepVerifier.create(v1).expectNextMatches{ it.votes.size > 0 }.verifyComplete()
+            StepVerifier.create(v2).expectNextMatches{ it.votes.size > 0 }.verifyComplete()
+            StepVerifier.create(v3).expectNextMatches{ it.votes.size > 0 }.verifyComplete()
+            StepVerifier.create(v4).expectNextMatches{ it.votes.size > 0 }.verifyComplete()
+            StepVerifier.create(v5).expectNextMatches{ it.votes.size > 0 }.verifyComplete()
 
             val bestDates = vs.getBestDates(voteGuid)
             assertTrue(bestDates.bestDay!!.equals(vote2.bestDates.first()))
