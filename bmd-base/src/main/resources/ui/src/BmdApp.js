@@ -1,75 +1,127 @@
-import React, { Component } from 'react';
-import DatePicker from 'react-date-picker';
+import React, {Component} from 'react';
+import {Button} from '@material-ui/core';
+import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns';
+import {makeStyles} from '@material-ui/core/styles';
+import {Col, Container, Form, Row} from 'react-bootstrap';
+
+const classes = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+
+    },
+}));
+
 
 class BmdApp extends Component {
 
- constructor(props) {
-    super(props);
-    this.state = {
-        startDate: new Date(),
-        endDate: new Date(),
-        currentDate: new Date(),
-        name: ""
-    };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            startDate: new Date(),
+            endDate: new Date(),
+            currentDate: new Date(),
+            name: ""
+        };
 
-  handleChange(event) {
-      const target = event.target;
-      const value = target.value;
-      const name = target.name;
-
-      this.setState({
-        [name]: value
-      });
-  }
-
-   handleSubmit(event) {
-      alert('Отправленное имя: ' + this.state.name);
-      event.preventDefault();
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChangeName = this.handleChangeName.bind(this);
     }
 
-  render() {
-    return (
-      <div className="App">
-        <h1>Best Meeting Day</h1>
-        <form onSubmit={this.handleSubmit}>
-            <div>
-                <label>Дата начала:
-                <DatePicker
-                    onChange={this.handleChange}
-                    value={this.state.startDate}
-                    name="startDate"
-                    minDate={this.state.currentDate}
-                    format="dd.MM.yyyy"
-                />
-                </label>
-            </div>
+    handleChange(value, name) {
+        this.setState({
+            [name]: value
+        });
+    }
 
-            <div>
-                <label>Дата окончания:
-                <DatePicker
-                   onChange={this.handleChange}
-                   value={this.state.endDate}
-                   name="endDate"
-                   minDate={this.state.currentDate}
-                   format="dd.MM.yyyy"
-                 />
-                 </label>
-            </div>
+    handleChangeName(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
 
-            <div>
-                <label>Имя создателя голосования:
-                   <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
-                </label>
-                <input type="submit" value="Создать" />
-            </div>
-         </form>
-    </div>
-    );
-  }
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleSubmit(event) {
+        alert('Отправленное имя: ' + this.state.name + ' Дана начала' + this.state.startDate);
+        event.preventDefault();
+    }
+
+    render() {
+        return (
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Container>
+                <Row>
+                    <h1>Создать опрос выбора лучше даты</h1>
+                </Row>
+                <Row>
+
+                    <Form noValidate onSubmit={this.handleSubmit}>
+
+                    <Form.Row>
+
+                        <Form.Group controlId="startd">
+                            <Form.Label column>Дата начала</Form.Label>
+                            <Col>
+                                <DatePicker
+                                    value={this.state.startDate}
+                                    onChange={date => this.handleChange(date, "startDate")}
+                                    minDate={this.state.currentDate}
+                                    format="dd.MM.yyyy"
+                                    name="startDate"
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group controlId="enddd">
+                            <Form.Label column>Дата окончания</Form.Label>
+                            <Col>
+                                <DatePicker
+                                    value={this.state.endDate}
+                                    onChange={date => this.handleChange(date, "endDate")}
+                                    minDate={this.state.currentDate}
+                                    format="dd.MM.yyyy"
+                                    name="endDate"
+                                />
+                            </Col>
+                        </Form.Group>
+
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group controlId="name">
+                            <Form.Label column sm={12}>Имя автора</Form.Label>
+                            <Col sm={10}>
+                                <Form.Control column sm={{span: 20, offset: 2}} placeholder="Имя автора"
+                                              value={this.state.name} onChange={this.handleChangeName} name="name"/>
+                            </Col>
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group md="4" controlId="b">
+                            <Col sm={10}>
+                                <Button name="name" variant="contained" color="primary" onClick={this.handleSubmit}>
+                                    Создать
+                                </Button>
+                            </Col>
+
+                        </Form.Group>
+
+                    </Form.Row>
+                </Form>
+                </Row>
+                </Container>
+            </MuiPickersUtilsProvider>
+        );
+    }
 }
 
 export default BmdApp;
