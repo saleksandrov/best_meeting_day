@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {Button} from '@material-ui/core';
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
-import {makeStyles} from '@material-ui/core/styles';
 import {Col, Container, Form, Row} from 'react-bootstrap';
 
+/*
 const classes = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -16,10 +16,10 @@ const classes = makeStyles(theme => ({
 
     },
 }));
+*/
 
 
 class BmdApp extends Component {
-
 
     constructor(props) {
         super(props);
@@ -61,7 +61,7 @@ class BmdApp extends Component {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Container>
                 <Row>
-                    <h1>Создать опрос выбора лучше даты</h1>
+                    <h1>Создать опрос выбора лучшей даты</h1>
                 </Row>
                 <Row>
 
@@ -94,28 +94,28 @@ class BmdApp extends Component {
                                 />
                             </Col>
                         </Form.Group>
-
                     </Form.Row>
+
                     <Form.Row>
                         <Form.Group controlId="name">
-                            <Form.Label column sm={12}>Имя автора</Form.Label>
-                            <Col sm={10}>
-                                <Form.Control column sm={{span: 20, offset: 2}} placeholder="Имя автора"
-                                              value={this.state.name} onChange={this.handleChangeName} name="name"/>
+                            <Form.Label column>Имя автора</Form.Label>
+                            <Col>
+                                <Form.Control type="text" placeholder="Имя автора" length={50} maxLength={200}
+                                              value={this.state.name} onChange={this.handleChangeName} name="name" />
                             </Col>
                         </Form.Group>
                     </Form.Row>
+
                     <Form.Row>
-                        <Form.Group md="4" controlId="b">
-                            <Col sm={10}>
+                        <Form.Group controlId="b">
+                            <Col>
                                 <Button name="name" variant="contained" color="primary" onClick={this.handleSubmit}>
                                     Создать
                                 </Button>
                             </Col>
-
                         </Form.Group>
-
                     </Form.Row>
+
                 </Form>
                 </Row>
                 </Container>
