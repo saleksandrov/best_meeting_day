@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import reactor.test.StepVerifier
 import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
-import ru.asv.bmd.base.service.VoteService
+import ru.asv.bmd.base.service.BaseVoteService
 import java.time.LocalDate
 
 @Import(TestConfig::class)
@@ -19,7 +19,7 @@ import java.time.LocalDate
 class RepositoryTest {
 
     @Autowired
-    lateinit var vs : VoteService
+    lateinit var vs : BaseVoteService
 
     @Test
     fun testCreateSimple() {

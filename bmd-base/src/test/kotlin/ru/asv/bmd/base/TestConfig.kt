@@ -7,14 +7,14 @@ import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder
 import de.flapdoodle.embed.process.config.IRuntimeConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import ru.asv.bmd.base.service.VoteService
+import ru.asv.bmd.base.service.BaseVoteService
 
 
 @Configuration
 open class TestConfig {
 
     @Bean
-    open fun voteService() = VoteService()
+    open fun voteService() = BaseVoteService()
 
     @Bean
     open fun embeddedMongoRuntimeConfig(): IRuntimeConfig {

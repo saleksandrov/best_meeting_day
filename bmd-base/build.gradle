@@ -64,3 +64,7 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
+
+processResources {
+    exclude '**/ui/node_modules/**'
+}

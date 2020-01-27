@@ -10,9 +10,8 @@ spring:
   #  date-format: dd.MM.yyyy
 
 bmd:
-  #date-format: dd.MM.yyyy
   db:
     port: 27017
     dbname: bmdbase
     host: localhost
-
+  mode: demo

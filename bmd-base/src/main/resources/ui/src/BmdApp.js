@@ -4,21 +4,6 @@ import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import {Col, Container, Form, Row} from 'react-bootstrap';
 
-/*
-const classes = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-
-    },
-}));
-*/
-
-
 class BmdApp extends Component {
 
     constructor(props) {

@@ -13,6 +13,7 @@ import ru.asv.bmd.base.service.VoteService
 
 @RestController
 @RequestMapping("/vote", produces = [MediaType.APPLICATION_JSON_VALUE])
+@CrossOrigin(origins = [ "http://localhost:3000", "http://localhost:4200" ])
 class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
 
     private val log = LoggerFactory.getLogger(BmdBaseRestService::class.java)
