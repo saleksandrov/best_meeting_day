@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
-import CreateVote from './component/CreateVote';
+import Site from './component/Site';
 
 class BmdApp extends Component {
 
-
     render() {
-        return (<CreateVote/>);
+        return (
+            <div className="container">
+                <Site />
+            </div>
+            );
     }
 }
 
