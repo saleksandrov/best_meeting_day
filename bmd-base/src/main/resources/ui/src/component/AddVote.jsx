@@ -1,33 +1,45 @@
 import React, {Component} from 'react';
-import MultipleDatesPicker from '@randex/material-ui-multiple-dates-picker'
-import {Button} from '@material-ui/core';
+import DayPicker, { DateUtils } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 
 class AddVote extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            open_flag: false
+            open_flag: false,
+            selectedDays: []
         };
 
         this.setOpen = this.setOpen.bind(this);
+        this.handleDayClick = this.handleDayClick.bind(this);
     }
 
     setOpen() {
         this.state.open_flag = !this.state.open_flag;
     }
 
+    handleDayClick(day, { selected }) {
+        const { selectedDays } = this.state;
+        if (selected) {
+            const selectedIndex = selectedDays.findIndex(selectedDay =>
+                DateUtils.isSameDay(selectedDay, day)
+            );
+            selectedDays.splice(selectedIndex, 1);
+        } else {
+            selectedDays.push(day);
+        }
+        this.setState({ selectedDays });
+    }
+
+
     render() {
         return (
             <div>
-                <Button onClick={this.setOpen()}  name="selectdates" variant="contained" color="primary">
-                    Выберите даты
-                </Button>
-                <MultipleDatesPicker
-
-                    open={this.state.open_flag}
-                    selectedDates={[]}
-                    onSubmit={dates => console.log('selected dates', dates)} />
+                <DayPicker
+                    selectedDays={this.state.selectedDays}
+                    onDayClick={this.handleDayClick}
+                />
             </div>
         );
     }
