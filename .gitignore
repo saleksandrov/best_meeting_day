@@ -29,6 +29,7 @@ model/build/
 web/build/
 eureka/build/
 zuul/build/
+bmd-base/build/
 
 ### IntelliJ IDEA ###
 .idea
