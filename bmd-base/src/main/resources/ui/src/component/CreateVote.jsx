@@ -41,6 +41,7 @@ class CreateVote extends Component {
     handleSubmit(event) {
         //alert('Отправленное имя: ' + this.state.name + ' Дана начала' + this.state.startDate);
         event.preventDefault();
+        //TODO change on real data
         VoteDataService.createVote({
             startDate: "01.11.2019",
             endDate: "01.12.2019",
@@ -63,7 +64,7 @@ class CreateVote extends Component {
                 <Container>
 
                     <Row>
-                        <h1>Создать опрос выбора лучшей даты</h1>
+                        <h3>Создать опрос выбора лучшей даты</h3>
                     </Row>
                     {this.state.voteId && <div class="alert alert-success">Создано голосование {this.state.voteId}</div>}
                     <Row>

@@ -15,7 +15,7 @@ class Site extends Component {
                 <Switch>
                     <Route path="/" exact component={Navigate}/>
                     <Route path="/createvote" exact component={CreateVote}/>
-                    <Route path="/addvote" exact component={AddVote}/>
+                    <Route path="/addvote/:voteId" exact component={AddVote}/>
                     <Route path="/viewresult" exact component={ViewResult}/>
                 </Switch>
                 </>

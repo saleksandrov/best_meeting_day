@@ -45,7 +45,7 @@ class DemoVoteService : VoteService {
             votes = mutableListOf()
             startDate = LocalDate.now()
             endDate = LocalDate.now()
-            creator = ""
+            creator = "Test Creator"
         })
     }
 

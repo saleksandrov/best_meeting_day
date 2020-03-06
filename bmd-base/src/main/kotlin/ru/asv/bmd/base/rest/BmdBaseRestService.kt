@@ -19,7 +19,7 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
     private val log = LoggerFactory.getLogger(BmdBaseRestService::class.java)
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = ["/start"], method = [RequestMethod.POST])
+    @PostMapping(value = ["/start"])
     fun startVote(@RequestBody vi: VoteInfo) : Mono<VoteInfo> {
         log.info("Starting vote ${vi}")
         // TODO add validation
@@ -29,7 +29,7 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = ["/add/{id}"], method = [RequestMethod.POST])
+    @PostMapping(value = ["/add/{id}"])
     fun addVote(@PathVariable id: String, @RequestBody vote: Vote): Mono<Vote> {
         // TODO add validation
         vs.addVote(id , vote)
@@ -37,11 +37,17 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = ["/getBestDates/{id}"], method = [RequestMethod.GET])
+    @GetMapping(value = ["/getBestDates/{id}"])
     fun getBestDates(@PathVariable id: String): Mono<VoteResult> {
         // TODO add validation
         return Mono.just(vs.getBestDates(id))
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = ["/get/{id}"])
+    fun getVote(@PathVariable id: String): Mono<VoteInfo> {
+        // TODO add validation
+        return vs.getVote(id)
+    }
 
 }
