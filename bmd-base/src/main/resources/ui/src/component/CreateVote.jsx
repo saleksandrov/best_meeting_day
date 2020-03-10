@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {Button} from '@material-ui/core';
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DayPicker, {DateUtils} from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 import DateFnsUtils from '@date-io/date-fns';
 import {Col, Container, Form, Row} from 'react-bootstrap';
 import VoteDataService from '../service/VoteDataService';
+import moment from 'moment';
 
 class CreateVote extends Component {
 
@@ -14,12 +17,14 @@ class CreateVote extends Component {
             endDate: new Date(),
             currentDate: new Date(),
             name: "",
-            voteId: ""
+            voteId: "",
+            selectedDays: [],
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
+        this.handleDayClick = this.handleDayClick.bind(this);
     }
 
     handleChange(value, name) {
@@ -41,12 +46,16 @@ class CreateVote extends Component {
     handleSubmit(event) {
         //alert('Отправленное имя: ' + this.state.name + ' Дана начала' + this.state.startDate);
         event.preventDefault();
-        //TODO change on real data
+        let dates = [];
+        this.state.selectedDays.forEach((date) => {
+            dates.push(moment(date).format('DD.MM.YYYY'))
+        });
+
         VoteDataService.createVote({
-            startDate: "01.11.2019",
-            endDate: "01.12.2019",
+            startDate: moment(this.state.startDate).format('DD.MM.YYYY'),
+            endDate: moment(this.state.endDate).format('DD.MM.YYYY'),
             creator: this.state.name,
-            bestDatesForCreator: ["11.11.2019", "12.11.2019"]
+            bestDatesForCreator: dates
         }).then(response => {
             this.setState({
                 startDate: new Date(),
@@ -58,15 +67,32 @@ class CreateVote extends Component {
 
     }
 
+    handleDayClick(day, {selected}) {
+        const {selectedDays} = this.state;
+        if (selected) {
+            const selectedIndex = selectedDays.findIndex(selectedDay =>
+                DateUtils.isSameDay(selectedDay, day)
+            );
+            selectedDays.splice(selectedIndex, 1);
+        } else {
+            selectedDays.push(day);
+        }
+        this.setState({selectedDays});
+    }
+
     render() {
+
+        let linkTOAddVote = `/addvote/${this.state.voteId}`;
+
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Container>
-
+                    <Row><a href="/">Назад</a></Row>
                     <Row>
                         <h3>Создать опрос выбора лучшей даты</h3>
                     </Row>
-                    {this.state.voteId && <div class="alert alert-success">Создано голосование {this.state.voteId}</div>}
+                    {this.state.voteId && <div class="alert alert-success">Создано голосование {this.state.voteId}.
+                        <a href={linkTOAddVote}>Ссылка на голование </a></div>}
                     <Row>
 
                         <Form noValidate onSubmit={this.handleSubmit}>
@@ -95,6 +121,18 @@ class CreateVote extends Component {
                                             minDate={this.state.currentDate}
                                             format="dd.MM.yyyy"
                                             name="endDate"
+                                        />
+                                    </Col>
+                                </Form.Group>
+                            </Form.Row>
+
+                            <Form.Row>
+                                <Form.Group controlId="dates">
+                                    <Form.Label column>Даты</Form.Label>
+                                    <Col>
+                                        <DayPicker
+                                            selectedDays={this.state.selectedDays}
+                                            onDayClick={this.handleDayClick}
                                         />
                                     </Col>
                                 </Form.Group>

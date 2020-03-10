@@ -6,7 +6,6 @@ import VoteDataService from '../service/VoteDataService';
 import {Button} from "@material-ui/core";
 import moment from 'moment';
 
-
 class AddVote extends Component {
 
     constructor(props) {
@@ -19,7 +18,8 @@ class AddVote extends Component {
             author: "",
             open_flag: false,
             selectedDays: [],
-            wasSent: false
+            wasSent: false,
+            isVisible: true
         };
 
         this.setOpen = this.setOpen.bind(this);
@@ -29,8 +29,8 @@ class AddVote extends Component {
     }
 
     componentDidMount() {
-        console.log("UI Get votes by id "  + this.state.voteId);
-        if (this.state.voteId.length === 0 ) {
+        console.log("UI Get votes by id " + this.state.voteId);
+        if (this.state.voteId.length === 0) {
             return
         }
 
@@ -71,9 +71,9 @@ class AddVote extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if (this.state.wasSent) return
+        if (this.state.wasSent) return;
         let dates = [];
-        this.state.selectedDays.forEach( (date) => {
+        this.state.selectedDays.forEach((date) => {
             dates.push(moment(date).format('DD.MM.YYYY'))
         });
         VoteDataService.addVote({
@@ -81,60 +81,63 @@ class AddVote extends Component {
             bestDates: dates
         }, this.state.voteId).then(response => {
             this.setState({
-                wasSent: true
+                wasSent: true,
+                isVisible: false
             })
         })
     }
 
     render() {
 
-        let { creator, startDate, endDate} = this.state;
+        let {creator, startDate, endDate, isVisible} = this.state;
 
         return (
-            <div>
-                <Container>
+                <div>
+                    <Container>
+                        <Row><a href="/">Назад</a></Row>
+                        <Row>
+                            <h3>Добавить голос. ID голосования {this.state.voteId}.</h3>
+                        </Row>
 
-                    <Row>
-                        <h3>Добавить голос</h3>
-                    </Row>
+                        {this.state.wasSent &&
+                        <div class="alert alert-success">Голос добавлен. ID голосования {this.state.voteId}</div>}
+                        <Row style={isVisible ? {} : { display: 'none' }}>
+                            <Form noValidate onSubmit={this.handleSubmit}>
 
-                    {this.state.wasSent &&
-                    <div class="alert alert-success">Голос добавлен {this.state.voteId}</div>}
+                                <div>Создатель {creator}</div>
+                                <div>Дата начала {startDate}</div>
+                                <div>Дата окончания {endDate}</div>
 
-                    <Row>
-                        <Form noValidate onSubmit={this.handleSubmit}>
-
-                           <div>Создатель {creator}</div>
-                            <div>Дата начала {startDate}</div>
-                            <div>Дата окончания {endDate}</div>
-
-                            <Form.Group controlId="dates">
-                                <Form.Label column>Даты</Form.Label>
-                                <Col>
-                                    <DayPicker
-                                        selectedDays={this.state.selectedDays}
-                                        onDayClick={this.handleDayClick}
-                                    />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group controlId="name">
-                                <Form.Label column>Имя автора</Form.Label>
-                                <Col>
-                                    <Form.Control type="text" placeholder="Имя автора" length={50} maxLength={200}
-                                                  value={this.state.author} onChange={this.handleChangeName} name="author" />
-                                </Col>
-                            </Form.Group>
-                            <Form.Group controlId="b">
-                                <Col>
-                                    <Button name="name" variant="contained" color="primary" onClick={this.handleSubmit}>
-                                        Создать
-                                    </Button>
-                                </Col>
-                            </Form.Group>
-                        </Form>
-                    </Row>
-                </Container>
-            </div>
+                                <Form.Group controlId="dates">
+                                    <Form.Label column>Даты</Form.Label>
+                                    <Col>
+                                        <DayPicker
+                                            selectedDays={this.state.selectedDays}
+                                            onDayClick={this.handleDayClick}
+                                        />
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group controlId="name">
+                                    <Form.Label column>Имя автора</Form.Label>
+                                    <Col>
+                                        <Form.Control type="text" placeholder="Имя автора" length={50}
+                                                      maxLength={200}
+                                                      value={this.state.author} onChange={this.handleChangeName}
+                                                      name="author"/>
+                                    </Col>
+                                </Form.Group>
+                                <Form.Group controlId="b">
+                                    <Col>
+                                        <Button name="name" variant="contained" color="primary"
+                                                onClick={this.handleSubmit}>
+                                            Создать
+                                        </Button>
+                                    </Col>
+                                </Form.Group>
+                            </Form>
+                        </Row>
+                    </Container>
+                </div>
         );
     }
 }
