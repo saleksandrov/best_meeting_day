@@ -52,9 +52,9 @@ class DemoVoteService : VoteService {
     override fun getBestDates(id: String): VoteResult {
         return VoteResult().apply {
             bestDay = LocalDate.now()
-            bestDayVoters = mutableListOf()
+            bestDayVoters = mutableListOf("User1", "User2")
             bestDayWithCreator = LocalDate.now()
-            bestDayWithCreatorVoters = mutableListOf()
+            bestDayWithCreatorVoters = mutableListOf("User2", "User3")
         }
     }
 
