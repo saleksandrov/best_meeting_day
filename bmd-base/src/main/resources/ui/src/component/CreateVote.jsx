@@ -5,8 +5,10 @@ import DayPicker, {DateUtils} from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import DateFnsUtils from '@date-io/date-fns';
 import {Col, Container, Form, Row} from 'react-bootstrap';
-import VoteDataService from '../service/VoteDataService';
+import VoteDataService, {HOST} from '../service/VoteDataService';
 import moment from 'moment';
+import {TelegramShareButton, WhatsappShareButton} from 'react-share';
+
 
 class CreateVote extends Component {
 
@@ -19,6 +21,7 @@ class CreateVote extends Component {
             name: "",
             voteId: "",
             selectedDays: [],
+            errorMsg: ""
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -44,7 +47,6 @@ class CreateVote extends Component {
     }
 
     handleSubmit(event) {
-        //alert('Отправленное имя: ' + this.state.name + ' Дана начала' + this.state.startDate);
         event.preventDefault();
         let dates = [];
         this.state.selectedDays.forEach((date) => {
@@ -62,8 +64,14 @@ class CreateVote extends Component {
                 endDate: new Date(),
                 currentDate: new Date(),
                 name: "",
-                voteId: response.data.id })
-        })
+                voteId: response.data.id,
+                errorMsg: ""})
+        }).catch(error => {
+               this.setState({
+                  errorMsg: error.response.data
+               })
+            }
+        )
 
     }
 
@@ -83,6 +91,7 @@ class CreateVote extends Component {
     render() {
 
         let linkTOAddVote = `/addvote/${this.state.voteId}`;
+        let urlToAddVote = HOST + linkTOAddVote;
 
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -91,10 +100,19 @@ class CreateVote extends Component {
                     <Row>
                         <h3>Создать опрос выбора лучшей даты</h3>
                     </Row>
-                    {this.state.voteId && <div class="alert alert-success">Создано голосование {this.state.voteId}.
-                        <a href={linkTOAddVote}>Ссылка на голование </a></div>}
+                    {
+                        this.state.voteId &&
+                        <div class="alert alert-success">Создано голосование {this.state.voteId}.
+                            <a href={linkTOAddVote}>Ссылка на голование </a>
+                            <TelegramShareButton url={urlToAddVote} title="Проголосовать за дату" children=""/>
+                            <WhatsappShareButton url={urlToAddVote} title="Проголосовать за дату" children=""/>
+                        </div>
+                    }
+                    {
+                        this.state.errorMsg &&
+                        <div class="alert alert-danger">{this.state.errorMsg} </div>
+                    }
                     <Row>
-
                         <Form noValidate onSubmit={this.handleSubmit}>
 
                             <Form.Row>
