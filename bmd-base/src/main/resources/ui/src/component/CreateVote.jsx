@@ -113,7 +113,7 @@ class CreateVote extends Component {
                         <div class="alert alert-danger">{this.state.errorMsg} </div>
                     }
                     <Row>
-                        <Form noValidate onSubmit={this.handleSubmit}>
+                        <Form noValidate onSubmit={this.handleSubmit} style={!this.state.voteId ? {} : { display: 'none' }}>
 
                             <Form.Row>
 

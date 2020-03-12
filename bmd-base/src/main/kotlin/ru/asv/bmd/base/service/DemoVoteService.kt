@@ -44,7 +44,7 @@ class DemoVoteService : VoteService {
             bestDatesForCreator = mutableListOf()
             votes = mutableListOf()
             startDate = LocalDate.now()
-            endDate = LocalDate.now()
+            endDate = LocalDate.now().plusDays(3)
             creator = "Test Creator"
         })
     }

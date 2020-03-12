@@ -19,7 +19,8 @@ class AddVote extends Component {
             open_flag: false,
             selectedDays: [],
             wasSent: false,
-            isVisible: true
+            isVisible: true,
+            errorMsg: ""
         };
 
         this.setOpen = this.setOpen.bind(this);
@@ -82,9 +83,15 @@ class AddVote extends Component {
         }, this.state.voteId).then(response => {
             this.setState({
                 wasSent: true,
-                isVisible: false
+                isVisible: false,
+                errorMsg: ""
             })
-        })
+        }).catch(error => {
+                this.setState({
+                    errorMsg: error.response.data
+                })
+            }
+        )
     }
 
     render() {
@@ -99,8 +106,16 @@ class AddVote extends Component {
                             <h3>Добавить голос. ID голосования {this.state.voteId}.</h3>
                         </Row>
 
-                        {this.state.wasSent &&
-                        <div class="alert alert-success">Голос добавлен. ID голосования {this.state.voteId}</div>}
+                        {
+                            this.state.wasSent &&
+                            <div class="alert alert-success">Голос добавлен. ID голосования {this.state.voteId}</div>
+                        }
+
+                        {
+                            this.state.errorMsg &&
+                            <div class="alert alert-danger">{this.state.errorMsg} </div>
+                        }
+
                         <Row style={isVisible ? {} : { display: 'none' }}>
                             <Form noValidate onSubmit={this.handleSubmit}>
 

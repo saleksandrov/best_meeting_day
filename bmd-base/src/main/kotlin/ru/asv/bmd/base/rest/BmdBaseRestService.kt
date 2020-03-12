@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
-import ru.asv.bmd.base.model.VoteResult
 import ru.asv.bmd.base.service.VoteService
 
+@Suppress("UNCHECKED_CAST")
 @RestController
 @RequestMapping("/vote", produces = [MediaType.APPLICATION_JSON_VALUE])
 @CrossOrigin(origins = [ "http://localhost:3000", "http://localhost:4200" ])
@@ -22,7 +22,7 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
     @PostMapping(value = ["/start"])
     fun startVote(@RequestBody vi: VoteInfo) : Mono<ResponseEntity<Any>> {
         log.info("Starting vote ${vi}")
-        return validate(vi) ?: kotlin.run {
+        return validateVoteInfo(vi) ?: kotlin.run {
             val createdVoteInfo = vs.create(vi)
             log.info("Vote was created ${createdVoteInfo}")
 
@@ -36,27 +36,47 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = ["/add/{id}"])
-    fun addVote(@PathVariable id: String, @RequestBody vote: Vote): Mono<Vote> {
-        // TODO add validation
-        vs.addVote(id , vote)
-        return Mono.just(vote)
+    fun addVote(@PathVariable id: String, @RequestBody vote: Vote): Mono<ResponseEntity<Any>> {
+        var validateMessage = validateId(id)
+        validateMessage = validateMessage ?: validateVote(vote)
+        val voteInfo = vs.getVote(id).block()
+        vote.bestDates.forEach{
+            if (voteInfo!!.startDate.isAfter(it) ||
+                    voteInfo.endDate.isBefore(it)) {
+                return reportBadRequest("Выбранные даты не попадают в указанный диапазон")
+            }
+        }
+
+        return validateMessage ?: kotlin.run {
+
+            vs.addVote(id , vote)
+            Mono.just(ResponseEntity.ok().body(vote) as ResponseEntity<Any>)
+        }
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = ["/getBestDates/{id}"])
-    fun getBestDates(@PathVariable id: String): Mono<VoteResult> {
-        // TODO add validation
-        return Mono.just(vs.getBestDates(id))
+    fun getBestDates(@PathVariable id: String): Mono<ResponseEntity<Any>> {
+        return validateId(id) ?: Mono.just(ResponseEntity.ok().body(vs.getBestDates(id)) as ResponseEntity<Any>)
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = ["/get/{id}"])
-    fun getVote(@PathVariable id: String): Mono<VoteInfo> {
-        // TODO add validation
-        return vs.getVote(id)
+    fun getVote(@PathVariable id: String): Mono<ResponseEntity<Any>> {
+        return validateId(id) ?: Mono.just(ResponseEntity.ok().body(vs.getVote(id)) as ResponseEntity<Any>)
     }
 
-    private fun validate(vi: VoteInfo) : Mono<ResponseEntity<Any>>? {
+    private fun validateId(id: String): Mono<ResponseEntity<Any>>? {
+        if (id.isBlank()) {
+            return reportBadRequest("Id может быть пустым")
+        }
+        if (id.length > 40) {
+            return reportBadRequest("Неверный Id")
+        }
+        return null
+    }
+
+    private fun validateVoteInfo(vi: VoteInfo) : Mono<ResponseEntity<Any>>? {
         if (vi.startDate.isAfter(vi.endDate)) {
             return reportBadRequest("Дата начала должна быть раньше даты окончания")
         }
@@ -69,6 +89,16 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
             }
         }
         if (vi.creator.isBlank()) {
+            return reportBadRequest("Введите свое имя")
+        }
+        return null
+    }
+
+    private fun validateVote(vote: Vote): Mono<ResponseEntity<Any>>? {
+        if (vote.bestDates.isEmpty()) {
+            return reportBadRequest("Не введены даты")
+        }
+        if (vote.author.isBlank()) {
             return reportBadRequest("Введите свое имя")
         }
         return null
