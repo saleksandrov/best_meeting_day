@@ -29,7 +29,7 @@ fun validateVoteInfo(vi: VoteInfo) : Mono<ResponseEntity<Any>>? {
     return null
 }
 
-private fun nameRegex() = Regex("^[a-zA-Z\\s\\d]+$")
+private fun nameRegex() = Regex("^[a-zA-ZйцукенгшщзхъфывапролджэёячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЁЯЧСМИТЬБЮ\\s\\d]+$")
 
 fun validateId(id: String): Mono<ResponseEntity<Any>>? {
     if (id.isBlank()) {
