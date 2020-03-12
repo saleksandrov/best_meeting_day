@@ -1,9 +1,9 @@
 package ru.asv.bmd.base.web
 
 import org.springframework.stereotype.Component
-import org.springframework.web.server.WebFilterChain
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
+import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 
 
@@ -14,7 +14,7 @@ class CustomWebFilter : WebFilter {
         return if (exchange.request.uri.path == "/") {
             chain.filter(
                     exchange.mutate().request(
-                            exchange.request.mutate().path("/ui/index.html").build()
+                            exchange.request.mutate().path("/index.html").build()
                     ).build()
             )
         } else chain.filter(exchange)

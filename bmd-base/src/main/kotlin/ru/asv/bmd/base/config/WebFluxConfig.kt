@@ -57,8 +57,10 @@ open class WebFluxConfig : WebFluxConfigurer {
         val cacheControl = CacheControl.noCache()
         val resourceChain = false
 
-        registry.addResourceHandler("/ui/**")
-                .addResourceLocations("classpath:/ui/public/")
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/ui/build/")
+                .addResourceLocations("classpath:/ui/build/static/css")
+                .addResourceLocations("classpath:/ui/build/static/js")
                 .setCacheControl(cacheControl)
                 .resourceChain(resourceChain)
 

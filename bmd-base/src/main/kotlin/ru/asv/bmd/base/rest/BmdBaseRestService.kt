@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
+import ru.asv.bmd.base.rest.validate.reportBadRequest
+import ru.asv.bmd.base.rest.validate.validateId
+import ru.asv.bmd.base.rest.validate.validateVote
+import ru.asv.bmd.base.rest.validate.validateVoteInfo
 import ru.asv.bmd.base.service.VoteService
 
 @Suppress("UNCHECKED_CAST")
@@ -30,9 +34,6 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
         }
 
     }
-
-    private fun reportBadRequest(msg: String) =
-            Mono.just(ResponseEntity.badRequest().body(msg) as ResponseEntity<Any>)
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = ["/add/{id}"])
@@ -64,44 +65,6 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
     @GetMapping(value = ["/get/{id}"])
     fun getVote(@PathVariable id: String): Mono<ResponseEntity<Any>> {
         return validateId(id) ?: Mono.just(ResponseEntity.ok().body(vs.getVote(id)) as ResponseEntity<Any>)
-    }
-
-    private fun validateId(id: String): Mono<ResponseEntity<Any>>? {
-        if (id.isBlank()) {
-            return reportBadRequest("Id может быть пустым")
-        }
-        if (id.length > 40) {
-            return reportBadRequest("Неверный Id")
-        }
-        return null
-    }
-
-    private fun validateVoteInfo(vi: VoteInfo) : Mono<ResponseEntity<Any>>? {
-        if (vi.startDate.isAfter(vi.endDate)) {
-            return reportBadRequest("Дата начала должна быть раньше даты окончания")
-        }
-        if (vi.bestDatesForCreator.isEmpty()) {
-            return reportBadRequest("Не выбраны даты")
-        }
-        vi.bestDatesForCreator.forEach{
-            if (it.isBefore(vi.startDate) || it.isAfter(vi.endDate)) {
-                return reportBadRequest("Выбранные даты не попадают в указанный диапазон")
-            }
-        }
-        if (vi.creator.isBlank()) {
-            return reportBadRequest("Введите свое имя")
-        }
-        return null
-    }
-
-    private fun validateVote(vote: Vote): Mono<ResponseEntity<Any>>? {
-        if (vote.bestDates.isEmpty()) {
-            return reportBadRequest("Не введены даты")
-        }
-        if (vote.author.isBlank()) {
-            return reportBadRequest("Введите свое имя")
-        }
-        return null
     }
 
 }
