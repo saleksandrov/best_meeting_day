@@ -26,8 +26,15 @@ open class MongoConfig : AbstractReactiveMongoConfiguration() {
     @Value("\${bmd.db.host}")
     private lateinit var host: String
 
+    @Value("\${bmd.db.username}")
+    private lateinit var username: String
+
+    @Value("\${bmd.db.password}")
+    private lateinit var password: String
+
+
     override fun reactiveMongoClient(): MongoClient {
-        return MongoClients.create("mongodb://${host}:${port}")
+        return MongoClients.create("mongodb://${username}:${password}@${host}:${port}")
     }
 
     override fun getDatabaseName(): String {

@@ -13,5 +13,7 @@ bmd:
   db:
     port: 27017
     dbname: bmdbase
-    host: localhost
+    host: 192.168.99.100
+    username: dev
+    password: dev
   mode: demo
