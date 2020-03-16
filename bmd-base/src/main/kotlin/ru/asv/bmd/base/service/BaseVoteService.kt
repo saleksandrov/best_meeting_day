@@ -30,11 +30,6 @@ class BaseVoteService : VoteService {
     }
 
     override fun addVote(id: String, vote: Vote): Mono<VoteInfo> {
-        // Sync block
-        //var vi = vr.findById(id).block()
-        //vi.votes.add(vote)
-        //vr.save(vi).subscribe()
-
         validateId(id)
         validateVote(vote)
 
@@ -92,8 +87,6 @@ class BaseVoteService : VoteService {
                 }
             )
         }
-
-
     }
 
 }

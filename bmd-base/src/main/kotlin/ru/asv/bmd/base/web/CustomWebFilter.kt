@@ -11,7 +11,10 @@ import reactor.core.publisher.Mono
 class CustomWebFilter : WebFilter {
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
-        return if (exchange.request.uri.path == "/") {
+        return if (exchange.request.uri.path == "/" ||
+                exchange.request.uri.path.startsWith("/addvote") ||
+                exchange.request.uri.path.startsWith("/viewresult") ||
+                exchange.request.uri.path.startsWith("/createvote")) {
             chain.filter(
                     exchange.mutate().request(
                             exchange.request.mutate().path("/index.html").build()
