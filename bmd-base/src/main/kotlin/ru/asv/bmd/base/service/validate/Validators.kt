@@ -4,32 +4,44 @@ import ru.asv.bmd.base.exception.ValidationException
 import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
 
-fun validateVoteInfo(vi: VoteInfo) {
-    if (vi.startDate.isAfter(vi.endDate)) {
-        throw ValidationException("Дата начала должна быть раньше даты окончания")
-    }
-    if (vi.bestDatesForCreator.isEmpty()) {
-        throw ValidationException("Не выбраны даты")
-    }
-    vi.bestDatesForCreator.forEach {
-        if (it.isBefore(vi.startDate) || it.isAfter(vi.endDate)) {
-            throw ValidationException("Выбранные даты не попадают в указанный диапазон")
-        }
-    }
-    if (vi.creator.isBlank()) {
-        throw ValidationException("Введите свое имя")
-    }
-    if (!(nameRegex() matches vi.creator)) {
-        throw ValidationException("Имя может содержать только буквы и цифры")
-    }
-    if (vi.creator.length > 200) {
-        throw ValidationException("Имя превыщает длину 200 символов")
-    }
-}
+
+const val NAME_IS_REQUIRED = "Введите свое имя"
+const val NAME_IS_NOT_CORRECT = "Имя может содержать только буквы и цифры"
+const val NAME_IS_TOO_LONG = "Имя превышает длину 200 символов"
+const val NAME_MAX_LENGTH = 200
+const val NO_DATES = "Не выбраны даты"
+const val DATE_NOT_IN_DIAPASON = "Выбранные даты не попадают в указанный диапазон"
+const val DATE_NOT_CORRECT = "Дата начала должна быть раньше даты окончания"
 
 private fun nameRegex() = Regex("^[a-zA-ZйцукенгшщзхъфывапролджэёячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЁЯЧСМИТЬБЮ\\s\\d]+$")
 
+fun validateVoteInfo(vi: VoteInfo) {
+
+    if (vi.startDate.isAfter(vi.endDate)) {
+        throw ValidationException(DATE_NOT_CORRECT)
+    }
+    if (vi.bestDatesForCreator.isEmpty()) {
+        throw ValidationException(NO_DATES)
+    }
+    vi.bestDatesForCreator.forEach {
+        if (it.isBefore(vi.startDate) || it.isAfter(vi.endDate)) {
+            throw ValidationException(DATE_NOT_IN_DIAPASON)
+        }
+    }
+    if (vi.creator.isBlank()) {
+        throw ValidationException(NAME_IS_REQUIRED)
+    }
+    if (!(nameRegex() matches vi.creator)) {
+        throw ValidationException(NAME_IS_NOT_CORRECT)
+    }
+    if (vi.creator.length > NAME_MAX_LENGTH) {
+        throw ValidationException(NAME_IS_TOO_LONG)
+    }
+
+}
+
 fun validateId(id: String) {
+
     if (id.isBlank()) {
         throw ValidationException("Id может быть пустым")
     }
@@ -40,17 +52,18 @@ fun validateId(id: String) {
 }
 
 fun validateVote(vote: Vote) {
+
     if (vote.bestDates.isEmpty()) {
-        throw ValidationException("Не введены даты")
+        throw ValidationException(NO_DATES)
     }
     if (vote.author.isBlank()) {
-        throw ValidationException("Введите свое имя")
+        throw ValidationException(NAME_IS_REQUIRED)
     }
     if (!(nameRegex() matches vote.author)) {
-        throw ValidationException("Имя может содержать только буквы и цифры")
+        throw ValidationException(NAME_IS_NOT_CORRECT)
     }
-    if (vote.author.length > 200) {
-        throw ValidationException("Имя превыщает длину 200 символов")
+    if (vote.author.length > NAME_MAX_LENGTH) {
+        throw ValidationException(NAME_IS_TOO_LONG)
     }
-}
 
+}
