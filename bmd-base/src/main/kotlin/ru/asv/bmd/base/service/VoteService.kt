@@ -9,5 +9,5 @@ interface VoteService {
     fun create(vi: VoteInfo): Mono<VoteInfo>
     fun addVote(id: String, vote: Vote): Mono<VoteInfo>
     fun getVote(id: String): Mono<VoteInfo>
-    fun getBestDates(id: String): VoteResult
+    fun getBestDates(id: String): Mono<VoteResult>
 }

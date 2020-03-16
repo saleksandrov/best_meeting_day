@@ -6,6 +6,10 @@ spring:
     name: bmd-base
   main:
     allow-bean-definition-overriding: true
+  data:
+    mongodb:
+      host: 192.168.99.100
+      port: 27017
   #webflux:
   #  date-format: dd.MM.yyyy
 

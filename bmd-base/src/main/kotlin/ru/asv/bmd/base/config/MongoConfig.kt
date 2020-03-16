@@ -32,7 +32,6 @@ open class MongoConfig : AbstractReactiveMongoConfiguration() {
     @Value("\${bmd.db.password}")
     private lateinit var password: String
 
-
     override fun reactiveMongoClient(): MongoClient {
         return MongoClients.create("mongodb://${username}:${password}@${host}:${port}")
     }

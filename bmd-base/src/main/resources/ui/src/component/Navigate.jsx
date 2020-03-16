@@ -41,7 +41,7 @@ class Navigate extends Component {
                         <Row>
                             <Col>
                                 <Form.Control type="text" placeholder="ID голосования"
-                                              length={10} maxLength={10}
+                                              length={40} maxLength={40}
                                               value={this.state.voteId} onChange={this.handleChangeName} name="voteId"/>
                             </Col>
                             <Col>
@@ -57,7 +57,7 @@ class Navigate extends Component {
                         <Row>
                             <Col>
                                 <Form.Control type="text" placeholder="ID голосования"
-                                              length={10} maxLength={10}
+                                              length={40} maxLength={40}
                                               value={this.state.voteId} onChange={this.handleChangeName} name="voteId"/>
                             </Col>
                             <Col>

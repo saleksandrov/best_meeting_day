@@ -49,13 +49,13 @@ class DemoVoteService : VoteService {
         })
     }
 
-    override fun getBestDates(id: String): VoteResult {
-        return VoteResult().apply {
+    override fun getBestDates(id: String): Mono<VoteResult> {
+        return Mono.just(VoteResult().apply {
             bestDay = LocalDate.now()
             bestDayVoters = mutableListOf("User1", "User2")
             bestDayWithCreator = LocalDate.now()
             bestDayWithCreatorVoters = mutableListOf("User2", "User3")
-        }
+        })
     }
 
 }

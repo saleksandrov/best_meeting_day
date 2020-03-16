@@ -9,7 +9,11 @@ import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.model.VoteResult
 import ru.asv.bmd.base.repository.VoteRepository
+import ru.asv.bmd.base.service.validate.validateId
+import ru.asv.bmd.base.service.validate.validateVote
+import ru.asv.bmd.base.service.validate.validateVoteInfo
 import java.time.LocalDate
+import javax.validation.ValidationException
 
 @Service
 @Profile("!demo")
@@ -21,9 +25,8 @@ class BaseVoteService : VoteService {
     lateinit var vr: VoteRepository
 
     override fun create(vi: VoteInfo): Mono<VoteInfo> {
-        return vr.save(vi).
-                doOnSuccess { log.info("The vote was created. Id=${it.id}") }.
-                doOnError { ex -> log.error("Cannot save vote to DB ", ex)  }
+        validateVoteInfo(vi)
+        return vr.save(vi).doOnSuccess { log.info("The vote was created. Id=${it.id}") }.doOnError { ex -> log.error("Cannot save vote to DB ", ex) }
     }
 
     override fun addVote(id: String, vote: Vote): Mono<VoteInfo> {
@@ -32,22 +35,32 @@ class BaseVoteService : VoteService {
         //vi.votes.add(vote)
         //vr.save(vi).subscribe()
 
-        // Async block
+        validateId(id)
+        validateVote(vote)
+
         return vr.findById(id).flatMap { vi ->
+            vote.bestDates.forEach {
+                if (vi.startDate.isAfter(it) ||
+                        vi.endDate.isBefore(it)) {
+                    throw ValidationException("Выбранные даты не попадают в указанный диапазон")
+                }
+            }
             vi.votes.add(vote)
             vr.save(vi)
         }
 
     }
 
-    override fun getVote(id: String): Mono<VoteInfo>  {
+    override fun getVote(id: String): Mono<VoteInfo> {
+        validateId(id)
         return vr.findById(id)
     }
 
-    override fun getBestDates(id: String): VoteResult {
+    override fun getBestDates(id: String): Mono<VoteResult> {
+        validateId(id)
         val authorsResultMap = mutableMapOf<LocalDate, MutableList<String>>()
         val withCreatorResultMap = mutableMapOf<LocalDate, MutableList<String>>()
-        vr.findById(id).doOnSuccess { vi ->
+        return vr.findById(id).doOnSuccess { vi ->
             val creatorDatesMap = vi.bestDatesForCreator.map { Pair(it, "") }.toMap()
             vi.votes.forEach { vote ->
                 vote.bestDates.forEach { date ->
@@ -61,21 +74,26 @@ class BaseVoteService : VoteService {
                     }
                 }
             }
+        }.flatMap {vi ->
             log.info("Found author dates ${authorsResultMap.size} ${authorsResultMap}")
-        }.block()
 
-        val maxResult = authorsResultMap.maxBy { it.value.size }
-        log.info("Max result ${maxResult}")
+            val maxResult = authorsResultMap.maxBy { it.value.size }
+            log.info("Max result ${maxResult}")
 
-        val maxCreatorResult = withCreatorResultMap.maxBy { it.value.size }
-        log.info("Max result ${maxCreatorResult}")
+            val maxCreatorResult = withCreatorResultMap.maxBy { it.value.size }
+            log.info("Max result ${maxCreatorResult}")
 
-        return VoteResult().apply {
-            bestDay = maxResult?.key
-            bestDayVoters = maxResult?.value ?: mutableListOf()
-            bestDayWithCreator = maxCreatorResult?.key
-            bestDayWithCreatorVoters = maxCreatorResult?.value ?: mutableListOf()
+            Mono.just(
+                VoteResult().apply {
+                    bestDay = maxResult?.key
+                    bestDayVoters = maxResult?.value ?: mutableListOf()
+                    bestDayWithCreator = maxCreatorResult?.key
+                    bestDayWithCreatorVoters = maxCreatorResult?.value ?: mutableListOf()
+                }
+            )
         }
+
+
     }
 
 }
