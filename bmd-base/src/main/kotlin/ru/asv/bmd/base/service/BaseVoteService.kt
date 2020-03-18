@@ -9,11 +9,11 @@ import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.model.VoteResult
 import ru.asv.bmd.base.repository.VoteRepository
+import ru.asv.bmd.base.service.validate.validateDateDiapason
 import ru.asv.bmd.base.service.validate.validateId
 import ru.asv.bmd.base.service.validate.validateVote
 import ru.asv.bmd.base.service.validate.validateVoteInfo
 import java.time.LocalDate
-import javax.validation.ValidationException
 
 @Service
 @Profile("!demo")
@@ -35,10 +35,7 @@ class BaseVoteService : VoteService {
 
         return vr.findById(id).flatMap { vi ->
             vote.bestDates.forEach {
-                if (vi.startDate.isAfter(it) ||
-                        vi.endDate.isBefore(it)) {
-                    throw ValidationException("Выбранные даты не попадают в указанный диапазон")
-                }
+                validateDateDiapason(vi, it)
             }
             vi.votes.add(vote)
             vr.save(vi)

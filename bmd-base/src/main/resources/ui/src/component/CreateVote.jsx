@@ -106,6 +106,16 @@ class CreateVote extends Component {
                             <a href={linkTOAddVote}>Ссылка на голование </a>
                             <TelegramShareButton url={urlToAddVote} title="Проголосовать за дату" children=""/>
                             <WhatsappShareButton url={urlToAddVote} title="Проголосовать за дату" children=""/>
+                            <br/>
+                            Добавить голос можно так:
+                            <ul>
+                                <li>
+                                    1. Перейдя на голосование по ссылке.
+                                       Скопируйте ссылку на голосование и отправьте ее всем заинтересованным.
+                                </li>
+                                <li>2. Введя ID голосования на начальной <a href="/">странице</a>.
+                                       Скопируйте ID и передайте его и ссылку на страницу.</li>
+                            </ul>
                         </div>
                     }
                     {
