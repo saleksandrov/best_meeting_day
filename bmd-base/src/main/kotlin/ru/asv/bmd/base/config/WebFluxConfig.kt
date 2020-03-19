@@ -39,20 +39,6 @@ open class WebFluxConfig : WebFluxConfigurer {
         }
     }
 
-    /*@Bean
-    open fun indexRouter(): RouterFunction<ServerResponse> {
-        val redirectToIndex =
-                ServerResponse
-                        .temporaryRedirect(URI("/ui/index.html"))
-                        .build()
-
-        return router {
-            GET("/") {
-                redirectToIndex
-            }
-        }
-    }*/
-
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         val cacheControl = CacheControl.noCache()
         val resourceChain = false
@@ -64,11 +50,6 @@ open class WebFluxConfig : WebFluxConfigurer {
                 .setCacheControl(cacheControl)
                 .resourceChain(resourceChain)
 
-        //registry.addResourceHandler("swagger-ui.html")
-        //        .addResourceLocations("classpath:/META-INF/resources/");
-
-        //registry.addResourceHandler("/webjars/**")
-        //        .addResourceLocations("classpath:/META-INF/resources/webjars/");
-
     }
+
 }
