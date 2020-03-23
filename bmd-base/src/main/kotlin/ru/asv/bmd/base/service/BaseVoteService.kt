@@ -81,6 +81,7 @@ class BaseVoteService : VoteService {
                     bestDayVoters = maxResult?.value ?: mutableListOf()
                     bestDayWithCreator = maxCreatorResult?.key
                     bestDayWithCreatorVoters = maxCreatorResult?.value ?: mutableListOf()
+                    totalVotes = vi.votes.size
                 }
             )
         }

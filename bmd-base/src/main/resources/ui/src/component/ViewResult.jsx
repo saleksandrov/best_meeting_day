@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Row} from 'react-bootstrap';
 import VoteDataService from '../service/VoteDataService';
-
+import { Bar } from '@nivo/bar'
 
 class ViewResult extends Component {
 
@@ -12,8 +12,8 @@ class ViewResult extends Component {
             bestDay: "",
             bestDayWithCreator: "",
             bestDayVoters: [],
-            bestDayWithCreatorVoters: []
-
+            bestDayWithCreatorVoters: [],
+            totalVotes: 0
         };
 
     }
@@ -29,13 +29,31 @@ class ViewResult extends Component {
                 bestDay: response.data.bestDay,
                 bestDayWithCreator: response.data.bestDayWithCreator,
                 bestDayVoters: response.data.bestDayVoters,
-                bestDayWithCreatorVoters: response.data.bestDayWithCreatorVoters
+                bestDayWithCreatorVoters: response.data.bestDayWithCreatorVoters,
+                totalVotes: response.data.totalVotes
             }))
     }
 
     render() {
 
-        let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters} = this.state;
+        let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes} = this.state;
+        const keys = ['value'];
+        const commonProps = {
+            width: 900,
+            height: 500,
+            margin: { top: 60, right: 80, bottom: 60, left: 80 },
+            data: [
+                   {'date': bestDay, 'value': bestDayVoters.length},
+                   {'date': bestDayWithCreator +' (Лучшая дата с автором)', 'value': bestDayWithCreatorVoters.length}],
+            indexBy: 'date',
+            keys,
+            padding: 0.2,
+            labelTextColor: 'inherit:darker(1.4)',
+            labelSkipWidth: 16,
+            labelSkipHeight: 16,
+            axisBottom: {tickSize: 5, tickPadding: 5, tickRotation: 0, legend: 'Даты', legendPosition: 'middle', legendOffset: 32 },
+            axisLeft: {tickSize: 5, tickPadding: 5, tickRotation: 0, legend: 'Количество голосов', legendPosition: 'middle', legendOffset: -40 }
+        }
 
         return (
             <Container>
@@ -43,23 +61,27 @@ class ViewResult extends Component {
                 <Row>
                     <h3>Результаты голосования. ID голосования {this.state.voteId}.</h3>
                 </Row>
-                <Row><h4>Лучшая дата {bestDay}. Количество проголосовавших {bestDayVoters.length}.</h4></Row>
-                <Row>Участники: </Row>
 
-                {bestDayVoters.map((voterName, i) => {
-                    return (<Row>{voterName}</Row>)
-                })}
+                <p>Всего проголосовало {totalVotes} </p>
 
-                <Row>
-                    <h4>
-                    Лучшая дата c автором {bestDayWithCreator}.
-                    Количество проголосовавших {bestDayWithCreatorVoters.length}.</h4>
-                </Row>
-                <Row>Участники: </Row>
+                <Bar
+                        {...commonProps}
+                        tooltip={({ id, value, color, index }) => (
+                            <strong style={{ color }}>
+                                { index === 0 ?
+                                   bestDayVoters.map((voterName, i) => {
+                                                       return (<p>{voterName}</p>)
+                                                   })
+                                   :
+                                   bestDayWithCreatorVoters.map((voterName, i) => {
+                                                       return (<p>{voterName}</p>)
+                                                   })
 
-                {bestDayWithCreatorVoters.map((voterName, i) => {
-                    return (<Row>{voterName}</Row>)
-                })}
+                                }
+                            </strong>
+                        )}
+                        theme={{ tooltip: { container: { background: '#444', }, }, }}
+                    />
 
             </Container>
         );

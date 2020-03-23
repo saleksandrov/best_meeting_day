@@ -51,4 +51,6 @@ class VoteResult {
 
     var bestDayWithCreatorVoters: MutableList<String> = mutableListOf()
 
+    var totalVotes: Int = 0
+
 }
