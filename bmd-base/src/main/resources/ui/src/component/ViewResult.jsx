@@ -39,8 +39,8 @@ class ViewResult extends Component {
         let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes} = this.state;
         const keys = ['value'];
         const commonProps = {
-            width: 900,
-            height: 500,
+            width: 800,
+            height: 400,
             margin: { top: 60, right: 80, bottom: 60, left: 80 },
             data: [
                    {'date': bestDay, 'value': bestDayVoters.length},

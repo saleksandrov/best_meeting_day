@@ -4,6 +4,7 @@ import CreateVote from './CreateVote';
 import AddVote from './AddVote';
 import Navigate from './Navigate';
 import ViewResult from './ViewResult';
+import moment from 'moment';
 
 class Site extends Component {
 
@@ -18,6 +19,7 @@ class Site extends Component {
                     <Route path="/addvote/:voteId" exact component={AddVote}/>
                     <Route path="/viewresult/:voteId" exact component={ViewResult}/>
                 </Switch>
+                <p><a href="https://yasobe.ru/na/asv_app_dev">Поддержать разработчика</a> &copy; {moment().year()} mailto:asv_app_dev@yandex.ru</p>
                 </>
             </Router>
         );
