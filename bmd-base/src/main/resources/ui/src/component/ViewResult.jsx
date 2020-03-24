@@ -58,6 +58,7 @@ class ViewResult extends Component {
         return (
             <Container>
                 <Row><a href="/">Назад</a></Row>
+                <br/>
                 <Row>
                     <h3>Результаты голосования. ID голосования {this.state.voteId}.</h3>
                 </Row>

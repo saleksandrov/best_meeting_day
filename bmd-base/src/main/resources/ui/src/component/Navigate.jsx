@@ -27,15 +27,17 @@ class Navigate extends Component {
         return (
             <div>
                 <Form noValidate>
-                    <Row>
-                        <Col>
 
-                            <Button name="addvote" variant="contained" color="primary"
-                                    onClick={() => this.props.history.push(`/createvote`)}>
-                                Создать голосование
-                            </Button>
-                        </Col>
-                    </Row>
+                    <Form.Group controlId="createvote">
+                        <Row>
+                            <Col>
+                                <Button name="addvote" variant="contained" color="primary"
+                                        onClick={() => this.props.history.push(`/createvote`)}>
+                                    Создать голосование
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form.Group>
 
                     <Form.Group controlId="addvote">
                         <Row>

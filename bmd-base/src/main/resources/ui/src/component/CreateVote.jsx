@@ -97,6 +97,7 @@ class CreateVote extends Component {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Container>
                     <Row><a href="/">Назад</a></Row>
+                    <br/>
                     <Row>
                         <h3>Создать опрос выбора лучшей даты</h3>
                     </Row>

@@ -102,6 +102,7 @@ class AddVote extends Component {
                 <div>
                     <Container>
                         <Row><a href="/">Назад</a></Row>
+                        <br/>
                         <Row>
                             <h3>Добавить голос. ID голосования {this.state.voteId}.</h3>
                         </Row>

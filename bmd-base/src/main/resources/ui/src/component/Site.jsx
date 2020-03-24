@@ -13,12 +13,15 @@ class Site extends Component {
             <Router>
                 <>
                 <h1>Выбор лучшей даты встречи</h1>
+                <br/>
                 <Switch>
                     <Route path="/" exact component={Navigate}/>
                     <Route path="/createvote" exact component={CreateVote}/>
                     <Route path="/addvote/:voteId" exact component={AddVote}/>
                     <Route path="/viewresult/:voteId" exact component={ViewResult}/>
                 </Switch>
+                <br/>
+                <br/>
                 <p><a href="https://yasobe.ru/na/asv_app_dev">Поддержать разработчика</a> &copy; {moment().year()} mailto:asv_app_dev@yandex.ru</p>
                 </>
             </Router>
