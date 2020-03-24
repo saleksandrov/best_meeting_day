@@ -1,6 +1,15 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'https://repo.spring.io/plugins-release/'
+        }
+        maven {
+            url "http://plugins.gradle.org/m2/"
+        }
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/'
+        }
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:2.2.1.RELEASE"
@@ -9,7 +18,7 @@ buildscript {
 }
 
 plugins {
-    //id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
 }

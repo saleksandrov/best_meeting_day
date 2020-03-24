@@ -14,6 +14,7 @@ import ru.asv.bmd.base.service.validate.validateId
 import ru.asv.bmd.base.service.validate.validateVote
 import ru.asv.bmd.base.service.validate.validateVoteInfo
 import java.time.LocalDate
+import java.util.*
 
 @Service
 @Profile("!demo")
@@ -50,8 +51,8 @@ class BaseVoteService : VoteService {
 
     override fun getBestDates(id: String): Mono<VoteResult> {
         validateId(id)
-        val authorsResultMap = mutableMapOf<LocalDate, MutableList<String>>()
-        val withCreatorResultMap = mutableMapOf<LocalDate, MutableList<String>>()
+        val authorsResultMap = TreeMap<LocalDate, MutableList<String>>()
+        val withCreatorResultMap = TreeMap<LocalDate, MutableList<String>>()
         return vr.findById(id).doOnSuccess { vi ->
             val creatorDatesMap = vi.bestDatesForCreator.map { Pair(it, "") }.toMap()
             vi.votes.forEach { vote ->
