@@ -8,7 +8,7 @@ import {Col, Container, Form, Row} from 'react-bootstrap';
 import VoteDataService, {HOST} from '../service/VoteDataService';
 import moment from 'moment';
 import {TelegramShareButton, WhatsappShareButton} from 'react-share';
-
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 class CreateVote extends Component {
 
@@ -103,20 +103,23 @@ class CreateVote extends Component {
                     </Row>
                     {
                         this.state.voteId &&
-                        <div class="alert alert-success">Создано голосование {this.state.voteId}.
+                        <div class="alert alert-success">
+                            <p>Создано голосование {this.state.voteId}. </p>
                             <a href={linkTOAddVote}>Ссылка на голование </a>
-                            <TelegramShareButton url={urlToAddVote} title="Проголосовать за дату" children=""/>
-                            <WhatsappShareButton url={urlToAddVote} title="Проголосовать за дату" children=""/>
                             <br/>
-                            Добавить голос можно так:
-                            <ul>
-                                <li>
-                                    1. Перейдя на голосование по ссылке.
-                                       Скопируйте ссылку на голосование и отправьте ее всем заинтересованным.
-                                </li>
-                                <li>2. Введя ID голосования на начальной <a href="/">странице</a>.
-                                       Скопируйте ID и передайте его и ссылку на страницу.</li>
-                            </ul>
+                            <p>
+                               Скопируйте ID голосования и введите его на <a href="/">странице</a>
+                               для добавления голоса или просмотра результатов.
+                            </p>
+
+                            <CopyToClipboard text={this.state.voteId}>
+                                <button>Скопировать ID</button>
+                            </CopyToClipboard>
+                            &nbsp;
+                            <CopyToClipboard text={urlToAddVote}>
+                                <button>Скопировать ссылку на голосование</button>
+                            </CopyToClipboard>
+
                         </div>
                     }
                     {

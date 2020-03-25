@@ -53,4 +53,6 @@ class VoteResult {
 
     var totalVotes: Int = 0
 
+    var creator: String = ""
+
 }

@@ -13,7 +13,8 @@ class ViewResult extends Component {
             bestDayWithCreator: "",
             bestDayVoters: [],
             bestDayWithCreatorVoters: [],
-            totalVotes: 0
+            totalVotes: 0,
+            creator: ""
         };
 
     }
@@ -21,7 +22,7 @@ class ViewResult extends Component {
     componentDidMount() {
         console.log("UI Get votes by id " + this.state.voteId);
         if (this.state.voteId.length === 0) {
-            return
+            return;
         }
 
         VoteDataService.getBestDates(this.state.voteId)
@@ -30,29 +31,40 @@ class ViewResult extends Component {
                 bestDayWithCreator: response.data.bestDayWithCreator,
                 bestDayVoters: response.data.bestDayVoters,
                 bestDayWithCreatorVoters: response.data.bestDayWithCreatorVoters,
-                totalVotes: response.data.totalVotes
-            }))
+                totalVotes: response.data.totalVotes,
+                creator: response.data.creator
+            })).catch(error => {
+               this.setState({
+                   bestDay: "",
+                   bestDayWithCreator: "",
+                   bestDayVoters: "",
+                   bestDayWithCreatorVoters: "",
+                   totalVotes: "",
+                   creator: ""
+               })
+           });
     }
 
     render() {
 
-        let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes} = this.state;
+        let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes, creator} = this.state;
+        bestDayWithCreator = bestDayWithCreator === null ? "" : bestDayWithCreator
         const keys = ['value'];
         const commonProps = {
-            width: 800,
-            height: 400,
-            margin: { top: 60, right: 80, bottom: 60, left: 80 },
+            width: 450,
+            height: 300,
+            margin: { top: 30, right: 50, bottom: 50, left: 50 },
             data: [
                    {'date': bestDay, 'value': bestDayVoters.length},
-                   {'date': bestDayWithCreator +' (Лучшая дата с автором)', 'value': bestDayWithCreatorVoters.length}],
+                   {'date': bestDayWithCreator +' (Лучшая дата с создателем)', 'value': bestDayWithCreatorVoters.length}],
             indexBy: 'date',
             keys,
             padding: 0.2,
             labelTextColor: 'inherit:darker(1.4)',
             labelSkipWidth: 16,
             labelSkipHeight: 16,
-            axisBottom: {tickSize: 5, tickPadding: 5, tickRotation: 0, legend: 'Даты', legendPosition: 'middle', legendOffset: 32 },
-            axisLeft: {tickSize: 5, tickPadding: 5, tickRotation: 0, legend: 'Количество голосов', legendPosition: 'middle', legendOffset: -40 }
+            axisBottom: {tickSize: 6, tickPadding: 5, tickRotation: 0, legend: 'Даты', legendPosition: 'middle', legendOffset: 32 },
+            axisLeft: {tickSize: 6, tickPadding: 5, tickRotation: 0, legend: 'Количество голосов', legendPosition: 'middle', legendOffset: -40 }
         }
 
         return (
@@ -60,7 +72,10 @@ class ViewResult extends Component {
                 <Row><a href="/">Назад</a></Row>
                 <br/>
                 <Row>
-                    <h3>Результаты голосования. ID голосования {this.state.voteId}.</h3>
+                    <h3>Результаты голосования</h3>
+                </Row>
+                <Row>
+                    <h5>Создал {creator}</h5>
                 </Row>
 
                 <p>Всего проголосовало {totalVotes} </p>

@@ -87,10 +87,10 @@ class AddVote extends Component {
                 errorMsg: ""
             })
         }).catch(error => {
-                this.setState({
-                    errorMsg: error.response.data
-                })
-            }
+            this.setState({
+                errorMsg: error.response.data
+            })
+        }
         )
     }
 
@@ -104,7 +104,7 @@ class AddVote extends Component {
                         <Row><a href="/">Назад</a></Row>
                         <br/>
                         <Row>
-                            <h3>Добавить голос. ID голосования {this.state.voteId}.</h3>
+                            <h3>Добавить голос</h3>
                         </Row>
 
                         {

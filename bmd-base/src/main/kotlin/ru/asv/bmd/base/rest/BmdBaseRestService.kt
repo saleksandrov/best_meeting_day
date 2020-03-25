@@ -11,6 +11,7 @@ import ru.asv.bmd.base.exception.ValidationException
 import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.service.VoteService
+import java.util.function.Function
 
 @Suppress("UNCHECKED_CAST")
 @RestController
@@ -31,22 +32,26 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
         }
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = ["/add/{id}"])
     fun addVote(@PathVariable id: String, @RequestBody vote: Vote): Mono<ResponseEntity<Any>> {
         return invokeOrThrow {
-            vs.addVote(id , vote).subscribe()
-            Mono.just(ResponseEntity.ok().body(vote) as ResponseEntity<Any>)
+            vs.addVote(id , vote)
+                    .map{ ResponseEntity.ok().body("OK") as ResponseEntity<Any> }
+                    .onErrorResume(
+                            object : Function<Throwable, Mono<ResponseEntity<Any>>> {
+                                override fun apply(t: Throwable): Mono<ResponseEntity<Any>> {
+                                    return reportBadRequest(t.message!!)
+                                }
+                            }
+                    )
         }
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = ["/getBestDates/{id}"])
     fun getBestDates(@PathVariable id: String): Mono<ResponseEntity<Any>> {
         return invokeOrThrow { Mono.just(ResponseEntity.ok().body(vs.getBestDates(id)) as ResponseEntity<Any>) }
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = ["/get/{id}"])
     fun getVote(@PathVariable id: String): Mono<ResponseEntity<Any>> {
         return invokeOrThrow { Mono.just(ResponseEntity.ok().body(vs.getVote(id)) as ResponseEntity<Any>) }
