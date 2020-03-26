@@ -120,12 +120,12 @@ class AddVote extends Component {
                         <Row style={isVisible ? {} : { display: 'none' }}>
                             <Form noValidate onSubmit={this.handleSubmit}>
 
-                                <div>Создатель {creator}</div>
+                                <div><strong>Организатор {creator}</strong></div>
                                 <div>Дата начала {startDate}</div>
                                 <div>Дата окончания {endDate}</div>
 
                                 <Form.Group controlId="dates">
-                                    <Form.Label column>Даты</Form.Label>
+                                    <Form.Label column>Выберите даты в диапазоне от {startDate} до {endDate}</Form.Label>
                                     <Col>
                                         <DayPicker
                                             selectedDays={this.state.selectedDays}

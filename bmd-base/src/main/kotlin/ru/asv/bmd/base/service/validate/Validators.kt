@@ -9,14 +9,16 @@ import java.time.LocalDate
 
 const val NAME_IS_REQUIRED = "Введите свое имя"
 const val NAME_IS_NOT_CORRECT = "Имя может содержать только буквы и цифры"
-const val NAME_IS_TOO_LONG = "Имя превышает длину 200 символов"
-const val NAME_MAX_LENGTH = 200
+const val NAME_IS_TOO_LONG = "Максимальная длина имени 50 символов"
+const val NAME_MAX_LENGTH = 50
 const val NO_DATES = "Не выбраны даты"
 const val DATE_NOT_IN_DIAPASON = "Выбранные даты не попадают в указанный диапазон"
 const val DATE_NOT_CORRECT = "Дата начала должна быть раньше даты окончания"
 const val DATE_DIAPASON_NOT_CORRECT = "Диапазон дат слишком большой или слишком маленький (менее 3 дней)"
+const val DATES_IS_NOT_IN_DIAPASON = "Выбранные даты не попадают в указанный диапазон"
 
 private fun nameRegex() = Regex("^[a-zA-ZйцукенгшщзхъфывапролджэёячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЁЯЧСМИТЬБЮ\\s\\d]+$")
+private fun idRegex() = Regex("^[a-zA-Z\\d-]+$")
 
 fun validateVoteInfo(vi: VoteInfo) {
 
@@ -51,16 +53,16 @@ fun validateVoteInfo(vi: VoteInfo) {
 fun validateDateDiapason(vi: VoteInfo, it: LocalDate) {
     if (vi.startDate.isAfter(it) ||
             vi.endDate.isBefore(it)) {
-        throw ValidationException("Выбранные даты не попадают в указанный диапазон")
+        throw ValidationException(DATES_IS_NOT_IN_DIAPASON)
     }
 }
 
 fun validateId(id: String) {
 
     if (id.isBlank()) {
-        throw ValidationException("Id может быть пустым")
+        throw ValidationException("Id не может быть пустым")
     }
-    if (id.length > 50) {
+    if (id.length > 50 || !(idRegex() matches id))  {
         throw ValidationException("Неверный Id")
     }
 

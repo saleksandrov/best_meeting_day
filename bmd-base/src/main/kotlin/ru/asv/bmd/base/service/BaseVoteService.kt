@@ -53,9 +53,10 @@ class BaseVoteService : VoteService {
         validateId(id)
         val authorsResultMap = TreeMap<LocalDate, MutableList<String>>()
         val withCreatorResultMap = TreeMap<LocalDate, MutableList<String>>()
+        var creatorDatesMap = emptyMap<LocalDate, String>()
         return vr.findById(id).doOnSuccess { vi ->
-            val creatorDatesMap = vi.bestDatesForCreator.map { Pair(it, "") }.toMap()
-            vi.votes.forEach { vote ->
+              creatorDatesMap = vi.bestDatesForCreator.map { Pair(it, "") }.toMap()
+              vi.votes.forEach { vote ->
                 vote.bestDates.forEach { date ->
                     authorsResultMap.getOrPut(date) {
                         mutableListOf()
@@ -67,6 +68,7 @@ class BaseVoteService : VoteService {
                     }
                 }
             }
+
         }.flatMap {vi ->
             log.info("Found author dates ${authorsResultMap.size} ${authorsResultMap}")
 
@@ -78,9 +80,12 @@ class BaseVoteService : VoteService {
 
             // add creator to result map
             maxCreatorResult?.key?.let {
-                withCreatorResultMap.getOrPut(maxCreatorResult.key) {
-                    mutableListOf()
-                }.add(vi.creator)
+                maxCreatorResult.value.add(vi.creator)
+            }
+            maxResult?.key?.let {
+                if (creatorDatesMap.containsKey(maxResult.key)) {
+                    maxResult.value.add(vi.creator)
+                }
             }
 
             Mono.just(
