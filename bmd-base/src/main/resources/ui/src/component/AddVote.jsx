@@ -152,6 +152,12 @@ class AddVote extends Component {
                                 </Form.Group>
                             </Form>
                         </Row>
+
+                        {
+                            this.state.errorMsg &&
+                            <div class="alert alert-danger">{this.state.errorMsg} </div>
+                        }
+
                     </Container>
                 </div>
         );

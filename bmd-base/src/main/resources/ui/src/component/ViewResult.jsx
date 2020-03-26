@@ -51,19 +51,19 @@ class ViewResult extends Component {
         bestDayWithCreator = bestDayWithCreator === null ? "" : bestDayWithCreator
         const keys = ['value'];
         const commonProps = {
-            width: 450,
-            height: 300,
-            margin: { top: 30, right: 50, bottom: 50, left: 50 },
+            width: 380,
+            height: 250,
+            margin: { top: 30, right: 50, bottom: 50, left: 45 },
             data: [
                    {'date': bestDay, 'value': bestDayVoters.length},
-                   {'date': bestDayWithCreator +' (Лучшая дата с создателем)', 'value': bestDayWithCreatorVoters.length}],
+                   {'date': bestDayWithCreator + ' (с организатором)', 'value': bestDayWithCreatorVoters.length}],
             indexBy: 'date',
             keys,
             padding: 0.2,
             labelTextColor: 'inherit:darker(1.4)',
-            labelSkipWidth: 16,
-            labelSkipHeight: 16,
-            axisBottom: {tickSize: 6, tickPadding: 5, tickRotation: 0, legend: 'Даты', legendPosition: 'middle', legendOffset: 32 },
+            labelSkipWidth: 5,
+            labelSkipHeight: 5,
+            axisBottom: {tickSize: 6, tickPadding: 5, tickRotation: 0, legend: 'Даты', legendPosition: 'middle', legendOffset: 40 },
             axisLeft: {tickSize: 6, tickPadding: 5, tickRotation: 0, legend: 'Количество голосов', legendPosition: 'middle', legendOffset: -40 }
         }
 
@@ -75,11 +75,12 @@ class ViewResult extends Component {
                     <h3>Результаты голосования</h3>
                 </Row>
                 <Row>
-                    <h5>Создал {creator}</h5>
+                    <h5>Организатор: {creator}</h5>
                 </Row>
 
-                <p>Всего проголосовало {totalVotes} </p>
+                <Row>Всего проголосовало {totalVotes} </Row>
 
+                <Row>
                 <Bar
                         {...commonProps}
                         tooltip={({ id, value, color, index }) => (
@@ -98,6 +99,7 @@ class ViewResult extends Component {
                         )}
                         theme={{ tooltip: { container: { background: '#444', }, }, }}
                     />
+                    </Row>
 
             </Container>
         );

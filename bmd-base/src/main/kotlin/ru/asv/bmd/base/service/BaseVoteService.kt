@@ -76,6 +76,13 @@ class BaseVoteService : VoteService {
             val maxCreatorResult = withCreatorResultMap.maxBy { it.value.size }
             log.info("Max result ${maxCreatorResult}")
 
+            // add creator to result map
+            maxCreatorResult?.key?.let {
+                withCreatorResultMap.getOrPut(maxCreatorResult.key) {
+                    mutableListOf()
+                }.add(vi.creator)
+            }
+
             Mono.just(
                 VoteResult().apply {
                     bestDay = maxResult?.key

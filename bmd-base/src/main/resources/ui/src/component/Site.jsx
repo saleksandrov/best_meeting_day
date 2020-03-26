@@ -22,7 +22,7 @@ class Site extends Component {
                 </Switch>
                 <br/>
                 <br/>
-                <p><a href="https://yasobe.ru/na/asv_app_dev">Поддержать разработчика</a> &copy; {moment().year()} mailto:asv_app_dev@yandex.ru</p>
+                <p><a href="https://yasobe.ru/na/asv_app_dev">Поддержать проект</a> &copy; {moment().year()} mailto:asv_app_dev@yandex.ru</p>
                 </>
             </Router>
         );

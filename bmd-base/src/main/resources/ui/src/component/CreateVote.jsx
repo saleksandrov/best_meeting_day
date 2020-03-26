@@ -7,8 +7,19 @@ import DateFnsUtils from '@date-io/date-fns';
 import {Col, Container, Form, Row} from 'react-bootstrap';
 import VoteDataService, {HOST} from '../service/VoteDataService';
 import moment from 'moment';
-import {TelegramShareButton, WhatsappShareButton} from 'react-share';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {
+  FacebookIcon,
+  LinkedinIcon,
+  TelegramIcon,
+  WhatsappIcon,
+  EmailIcon,
+  FacebookShareButton,
+  LinkedinShareButton,
+  TelegramShareButton,
+  WhatsappShareButton,
+  EmailShareButton
+} from 'react-share';
 
 class CreateVote extends Component {
 
@@ -105,13 +116,14 @@ class CreateVote extends Component {
                         this.state.voteId &&
                         <div class="alert alert-success">
                             <p>Создано голосование {this.state.voteId}. </p>
-                            <a href={linkTOAddVote}>Ссылка на голование </a>
                             <br/>
                             <p>
                                Скопируйте ID голосования и введите его на <a href="/">странице</a>
                                для добавления голоса или просмотра результатов.
+                               Для удобства вы можете скопировать прямую ссылку для голосования и отправить ее всем участникам.
                             </p>
 
+                            <p>
                             <CopyToClipboard text={this.state.voteId}>
                                 <button>Скопировать ID</button>
                             </CopyToClipboard>
@@ -119,7 +131,32 @@ class CreateVote extends Component {
                             <CopyToClipboard text={urlToAddVote}>
                                 <button>Скопировать ссылку на голосование</button>
                             </CopyToClipboard>
-
+                            </p>
+                            <p>
+                            <TelegramShareButton
+                                        url={urlToAddVote}
+                                        quote="Проголосовать"
+                                        className="AddVote"
+                                      >
+                                <TelegramIcon size={32} round />
+                            </TelegramShareButton>
+                            &nbsp;
+                            <WhatsappShareButton
+                                        url={urlToAddVote}
+                                        quote="Проголосовать"
+                                        className="AddVote"
+                                      >
+                                <WhatsappIcon size={32} round />
+                            </WhatsappShareButton>
+                            &nbsp;
+                            <EmailShareButton
+                                        url={urlToAddVote}
+                                        quote="Проголосовать"
+                                        className="AddVote"
+                                      >
+                                <EmailIcon size={32} round />
+                            </EmailShareButton>
+                            </p>
                         </div>
                     }
                     {
@@ -192,6 +229,12 @@ class CreateVote extends Component {
 
                         </Form>
                     </Row>
+
+                    {
+                        this.state.errorMsg &&
+                        <div class="alert alert-danger">{this.state.errorMsg} </div>
+                    }
+
                 </Container>
             </MuiPickersUtilsProvider>
         );
