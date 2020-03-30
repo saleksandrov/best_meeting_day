@@ -27,6 +27,12 @@ class VoteInfo {
 
     var creator: String = ""
 
+    var description: String = ""
+        set(value) {
+            value.replace("<", "&lt;")
+            value.replace(">", "&gt;")
+            field = value
+        }
 }
 
 @Document
@@ -54,5 +60,7 @@ class VoteResult {
     var totalVotes: Int = 0
 
     var creator: String = ""
+
+    var description: String = ""
 
 }

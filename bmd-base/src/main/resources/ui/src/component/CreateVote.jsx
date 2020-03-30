@@ -30,6 +30,7 @@ class CreateVote extends Component {
             endDate: new Date(),
             currentDate: new Date(),
             name: "",
+            descr: "",
             voteId: "",
             selectedDays: [],
             errorMsg: ""
@@ -68,13 +69,15 @@ class CreateVote extends Component {
             startDate: moment(this.state.startDate).format('DD.MM.YYYY'),
             endDate: moment(this.state.endDate).format('DD.MM.YYYY'),
             creator: this.state.name,
-            bestDatesForCreator: dates
+            bestDatesForCreator: dates,
+            description: this.state.descr
         }).then(response => {
             this.setState({
                 startDate: new Date(),
                 endDate: new Date(),
                 currentDate: new Date(),
                 name: "",
+                descr: "",
                 voteId: response.data.id,
                 errorMsg: ""})
         }).catch(error => {
@@ -213,6 +216,16 @@ class CreateVote extends Component {
                                     <Col>
                                         <Form.Control type="text" placeholder="Имя автора" length={50} maxLength={200}
                                                       value={this.state.name} onChange={this.handleChangeName} name="name" />
+                                    </Col>
+                                </Form.Group>
+                            </Form.Row>
+
+                            <Form.Row>
+                                <Form.Group controlId="descr">
+                                    <Form.Label column>Цель встречи</Form.Label>
+                                    <Col>
+                                        <Form.Control as="textarea" rows="3" maxLength={200}
+                                                      value={this.state.descr} onChange={this.handleChangeName} name="descr" />
                                     </Col>
                                 </Form.Group>
                             </Form.Row>

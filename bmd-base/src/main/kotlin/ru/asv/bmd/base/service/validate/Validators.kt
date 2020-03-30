@@ -10,7 +10,9 @@ import java.time.LocalDate
 const val NAME_IS_REQUIRED = "Введите свое имя"
 const val NAME_IS_NOT_CORRECT = "Имя может содержать только буквы и цифры"
 const val NAME_IS_TOO_LONG = "Максимальная длина имени 50 символов"
+const val DESCR_IS_TOO_LONG = "Максимальная длина поля 200 символов"
 const val NAME_MAX_LENGTH = 50
+const val DESCR_MAX_LENGTH = 200
 const val NO_DATES = "Не выбраны даты"
 const val DATE_NOT_IN_DIAPASON = "Выбранные даты не попадают в указанный диапазон"
 const val DATE_NOT_CORRECT = "Дата начала должна быть раньше даты окончания"
@@ -47,7 +49,9 @@ fun validateVoteInfo(vi: VoteInfo) {
     if (vi.creator.length > NAME_MAX_LENGTH) {
         throw ValidationException(NAME_IS_TOO_LONG)
     }
-
+    if (vi.description.length > DESCR_MAX_LENGTH) {
+        throw ValidationException(DESCR_IS_TOO_LONG)
+    }
 }
 
 fun validateDateDiapason(vi: VoteInfo, it: LocalDate) {

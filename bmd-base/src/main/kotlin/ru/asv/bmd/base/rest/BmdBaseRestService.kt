@@ -11,7 +11,6 @@ import ru.asv.bmd.base.exception.ValidationException
 import ru.asv.bmd.base.model.Vote
 import ru.asv.bmd.base.model.VoteInfo
 import ru.asv.bmd.base.service.VoteService
-import java.util.function.Function
 
 @Suppress("UNCHECKED_CAST")
 @RestController
@@ -37,13 +36,7 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
         return invokeOrThrow {
             vs.addVote(id , vote)
                     .map{ ResponseEntity.ok().body("OK") as ResponseEntity<Any> }
-                    .onErrorResume(
-                            object : Function<Throwable, Mono<ResponseEntity<Any>>> {
-                                override fun apply(t: Throwable): Mono<ResponseEntity<Any>> {
-                                    return reportBadRequest(t.message!!)
-                                }
-                            }
-                    )
+                    .onErrorResume { t -> reportBadRequest(t.message!!) }
         }
     }
 
@@ -57,7 +50,7 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
         return invokeOrThrow { Mono.just(ResponseEntity.ok().body(vs.getVote(id)) as ResponseEntity<Any>) }
     }
 
-    fun invokeOrThrow(invokeLogic: () -> Mono<ResponseEntity<Any>>): Mono<ResponseEntity<Any>> {
+    private fun invokeOrThrow(invokeLogic: () -> Mono<ResponseEntity<Any>>): Mono<ResponseEntity<Any>> {
         return try {
             invokeLogic()
         } catch (ve: ValidationException) {
@@ -68,10 +61,10 @@ class BmdBaseRestService @Autowired constructor(val vs : VoteService) {
         }
     }
 
-    fun reportBadRequest(msg: String) =
+    private fun reportBadRequest(msg: String) =
             Mono.just(ResponseEntity.badRequest().body(msg) as ResponseEntity<Any>)
 
-    fun reportInternalError(msg: String) =
+    private fun reportInternalError(msg: String) =
             Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(msg) as ResponseEntity<Any>)
 
 }

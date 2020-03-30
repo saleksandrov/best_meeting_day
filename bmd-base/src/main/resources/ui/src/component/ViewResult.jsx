@@ -14,7 +14,8 @@ class ViewResult extends Component {
             bestDayVoters: [],
             bestDayWithCreatorVoters: [],
             totalVotes: 0,
-            creator: ""
+            creator: "",
+            description: ""
         };
 
     }
@@ -32,7 +33,8 @@ class ViewResult extends Component {
                 bestDayVoters: response.data.bestDayVoters,
                 bestDayWithCreatorVoters: response.data.bestDayWithCreatorVoters,
                 totalVotes: response.data.totalVotes,
-                creator: response.data.creator
+                creator: response.data.creator,
+                descr: response.data.description
             })).catch(error => {
                this.setState({
                    bestDay: "",
@@ -40,14 +42,15 @@ class ViewResult extends Component {
                    bestDayVoters: "",
                    bestDayWithCreatorVoters: "",
                    totalVotes: "",
-                   creator: ""
+                   creator: "",
+                   descr: ""
                })
            });
     }
 
     render() {
 
-        let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes, creator} = this.state;
+        let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes, creator, descr} = this.state;
         bestDayWithCreator = bestDayWithCreator === null ? "" : bestDayWithCreator
         const keys = ['value'];
         const commonProps = {
@@ -78,7 +81,11 @@ class ViewResult extends Component {
                     <h5>Организатор: {creator}</h5>
                 </Row>
 
-                <Row>Всего проголосовало {totalVotes} </Row>
+                <Row>Всего проголосовало: {totalVotes} </Row>
+
+                <Row>Цель встречи: {descr} </Row>
+
+                <Row>Для просмотра списка участников нажмите/наведите мышкой на столбец</Row>
 
                 <Row>
                 <Bar

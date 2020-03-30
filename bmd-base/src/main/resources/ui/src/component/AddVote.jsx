@@ -16,6 +16,7 @@ class AddVote extends Component {
             endDate: "",
             creator: "",
             author: "",
+            descr: "",
             open_flag: false,
             selectedDays: [],
             wasSent: false,
@@ -39,7 +40,8 @@ class AddVote extends Component {
             .then(response => this.setState({
                 startDate: response.data.startDate,
                 endDate: response.data.endDate,
-                creator: response.data.creator
+                creator: response.data.creator,
+                descr: response.data.description
             }))
     }
 
@@ -96,7 +98,7 @@ class AddVote extends Component {
 
     render() {
 
-        let {creator, startDate, endDate, isVisible} = this.state;
+        let {creator, startDate, endDate, isVisible, descr} = this.state;
 
         return (
                 <div>
@@ -123,6 +125,7 @@ class AddVote extends Component {
                                 <div><strong>Организатор {creator}</strong></div>
                                 <div>Дата начала {startDate}</div>
                                 <div>Дата окончания {endDate}</div>
+                                <div>Цель встречи: {descr}</div>
 
                                 <Form.Group controlId="dates">
                                     <Form.Label column>Выберите даты в диапазоне от {startDate} до {endDate}</Form.Label>
