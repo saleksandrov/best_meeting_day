@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import ru.asv.bmd.base.model.Sequence
 import ru.asv.bmd.base.model.VOTE_SEQ
+import ru.asv.bmd.base.model.VoteInfo
 import javax.annotation.PostConstruct
 
 
 interface CoreService {
     fun getNextVal() : Mono<Sequence>
+    fun totalVotes() : Mono<Long>
 }
 
 @Service
@@ -49,6 +51,10 @@ class BaseCoreService @Autowired constructor(
                 FindAndModifyOptions.options().returnNew(true),
                 Sequence::class.java)
         return seq
+    }
+
+    override fun totalVotes(): Mono<Long> {
+        return mongoTemplate.count(Query.query(Criteria.where("number").gt(0)), VoteInfo::class.java)
     }
 
 }
