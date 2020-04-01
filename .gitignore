@@ -23,13 +23,7 @@ logs
 .sts4-cache
 
 # build dirs
-loader/build/
-analyzer/build/
-model/build/
-web/build/
-eureka/build/
-zuul/build/
-bmd-base/build/
+/bmd-base/build/
 
 ### IntelliJ IDEA ###
 .idea

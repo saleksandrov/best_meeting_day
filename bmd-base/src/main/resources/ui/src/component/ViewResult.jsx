@@ -51,7 +51,7 @@ class ViewResult extends Component {
     render() {
 
         let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes, creator, descr} = this.state;
-        bestDayWithCreator = bestDayWithCreator === null ? "" : bestDayWithCreator
+        bestDayWithCreator = bestDayWithCreator === null ? "" : bestDayWithCreator;
         const keys = ['value'];
         const commonProps = {
             width: 380,

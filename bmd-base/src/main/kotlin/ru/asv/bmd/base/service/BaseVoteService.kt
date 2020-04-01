@@ -25,9 +25,18 @@ class BaseVoteService : VoteService {
     @Autowired
     lateinit var vr: VoteRepository
 
+    @Autowired
+    lateinit var coreService: CoreService
+
     override fun create(vi: VoteInfo): Mono<VoteInfo> {
         validateVoteInfo(vi)
-        return vr.save(vi).doOnSuccess { log.info("The vote was created. Id=${it.id}") }.doOnError { ex -> log.error("Cannot save vote to DB ", ex) }
+        return coreService.getNextVal().doOnSuccess {
+            vi.number = it.value
+        }.flatMap {
+            vr.save(vi)
+                    .doOnSuccess { log.info("The vote was created. Id=${it.id}") }
+                    .doOnError { ex -> log.error("Cannot save vote to DB ", ex) }
+        }
     }
 
     override fun addVote(id: String, vote: Vote): Mono<VoteInfo> {
@@ -69,7 +78,7 @@ class BaseVoteService : VoteService {
                 }
             }
 
-        }.flatMap {vi ->
+        }.flatMap { vi ->
             log.info("Found author dates ${authorsResultMap.size} ${authorsResultMap}")
 
             val maxResult = authorsResultMap.maxBy { it.value.size }

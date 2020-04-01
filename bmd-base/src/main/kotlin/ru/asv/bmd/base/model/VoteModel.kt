@@ -2,6 +2,7 @@ package ru.asv.bmd.base.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
@@ -10,6 +11,9 @@ class VoteInfo {
 
     @Id
     var id: String? = null
+
+    @Indexed
+    var number: Long = 0
 
     @JsonFormat(pattern = "dd.MM.yyyy")
     var creationDate: LocalDate = LocalDate.now()
@@ -62,5 +66,20 @@ class VoteResult {
     var creator: String = ""
 
     var description: String = ""
+
+}
+
+const val VOTE_SEQ = "vote_seq"
+
+@Document
+class Sequence {
+
+    @Id
+    var id : String? = null
+
+    @Indexed
+    var name : String = "none"
+
+    var value : Long = 0
 
 }

@@ -10,14 +10,8 @@ spring:
     mongodb:
       host: 192.168.99.100
       port: 27017
-  #webflux:
-  #  date-format: dd.MM.yyyy
-
-bmd:
-  db:
-    port: 27017
-    dbname: bmdbase
-    host: 192.168.99.100
-    username: dev
-    password: dev
-  mode: demo
+      auto-index-creation: false
+      authentication-database: admin
+      username: dev
+      password: dev
+      database: bmdbase

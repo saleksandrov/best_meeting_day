@@ -29,7 +29,7 @@
         <appender-ref ref="FILE"/>
     </logger>
 
-    <logger name="org.springframework.web" level="debug" additivity="false">
+    <logger name="org.springframework.web" level="info" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 

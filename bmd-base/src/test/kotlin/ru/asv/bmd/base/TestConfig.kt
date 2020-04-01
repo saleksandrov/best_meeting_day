@@ -11,7 +11,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import reactor.core.publisher.Mono
+import ru.asv.bmd.base.model.Sequence
 import ru.asv.bmd.base.service.BaseVoteService
+import ru.asv.bmd.base.service.CoreService
 
 
 @Configuration
@@ -19,6 +22,14 @@ open class TestConfig : AbstractReactiveMongoConfiguration() {
 
     @Bean
     open fun voteService() = BaseVoteService()
+
+    @Bean
+    open fun coreService() = object : CoreService {
+        override fun getNextVal(): Mono<Sequence> {
+            return Mono.just(Sequence().apply { value = 100 })
+        }
+
+    }
 
     @Bean
     open fun embeddedMongoRuntimeConfig(): IRuntimeConfig {
