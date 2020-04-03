@@ -1,0 +1,38 @@
+version: '3.1' 
+
+services:
+  bmd-mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin111
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 900M
+        reservations:
+          cpus: '1'
+          memory: 900M
+    volumes:
+      - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+    command: mongod
+
+  bmd-backend:
+    build: .
+    image: bmd-backend
+    depends_on:
+      - bmd-mongo
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 800M
+        reservations:
+          cpus: '1'
+          memory: 800M
+    ports:
+      - "80:8080"
+
+

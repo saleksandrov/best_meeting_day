@@ -15,7 +15,8 @@ class ViewResult extends Component {
             bestDayWithCreatorVoters: [],
             totalVotes: 0,
             creator: "",
-            description: ""
+            description: "",
+            isVisible: true
         };
 
     }
@@ -43,14 +44,15 @@ class ViewResult extends Component {
                    bestDayWithCreatorVoters: "",
                    totalVotes: "",
                    creator: "",
-                   descr: ""
+                   descr: "",
+                   isVisible: false
                })
            });
     }
 
     render() {
 
-        let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes, creator, descr} = this.state;
+        let {bestDay, bestDayWithCreator, bestDayVoters, bestDayWithCreatorVoters, totalVotes, creator, descr, isVisible} = this.state;
         bestDayWithCreator = bestDayWithCreator === null ? "" : bestDayWithCreator;
         const keys = ['value'];
         const commonProps = {
@@ -87,7 +89,7 @@ class ViewResult extends Component {
 
                 <Row>Для просмотра списка участников нажмите/наведите мышкой на столбец</Row>
 
-                <Row>
+                <Row style={isVisible ? {} : { display: 'none' }}>
                 <Bar
                         {...commonProps}
                         tooltip={({ id, value, color, index }) => (

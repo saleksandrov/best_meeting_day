@@ -42,7 +42,11 @@ class AddVote extends Component {
                 endDate: response.data.endDate,
                 creator: response.data.creator,
                 descr: response.data.description
-            }))
+            })).catch(error => {
+                      this.setState({
+                          isVisible: false
+                      })
+                })
     }
 
     setOpen() {
