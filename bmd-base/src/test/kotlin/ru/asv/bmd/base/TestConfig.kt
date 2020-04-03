@@ -29,6 +29,9 @@ open class TestConfig : AbstractReactiveMongoConfiguration() {
             return Mono.just(Sequence().apply { value = 100 })
         }
 
+        override fun totalVotes(): Mono<Long> {
+            return Mono.just(1)
+        }
     }
 
     @Bean
