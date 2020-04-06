@@ -6,6 +6,10 @@ spring:
     name: bmd-base
   main:
     allow-bean-definition-overriding: true
+  boot:
+    admin:
+      client:
+        url: http://localhost:8081
   data:
     mongodb:
       host: 192.168.99.100
@@ -15,3 +19,9 @@ spring:
       username: dev
       password: dev
       database: bmdbase
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
