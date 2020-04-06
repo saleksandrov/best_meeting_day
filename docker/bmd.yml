@@ -7,32 +7,30 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin111
-    #deploy:
-    #  resources:
-    #    limits:
-    #      cpus: '1'
-    #      memory: 900M
-    #    reservations:
-    #      cpus: '1'
-    #      memory: 900M
     volumes:
       - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
     command: mongod
 
   bmd-backend:
-    build: .
-    image: bmd-backend
+    build: ./modules/bmd-base
+    image: bmd-backend:v1_0_0
     depends_on:
       - bmd-mongo
+    ports:
+      - "80:8080"
+
+  boot-admin:
+    build: ./modules/boot-admin
+    image: boot-admin:v1
+
+
+
+# Exaple for resource limit
     #deploy:
     #  resources:
     #    limits:
     #      cpus: '1'
-    #      memory: 800M
+    #      memory: 900M
     #    reservations:
     #      cpus: '1'
-    #      memory: 800M
-    ports:
-      - "80:8080"
-
-
+    #      memory: 900M
