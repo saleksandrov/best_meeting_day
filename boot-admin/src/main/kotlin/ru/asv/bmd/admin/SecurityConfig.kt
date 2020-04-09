@@ -14,23 +14,23 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         val successHandler = SavedRequestAwareAuthenticationSuccessHandler()
         successHandler.setTargetUrlParameter("redirectTo")
-        successHandler.setDefaultTargetUrl("/")
+        successHandler.setDefaultTargetUrl("/sba")
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/actuator/**").permitAll()
 
         http.authorizeRequests()
-                .antMatchers("/assets/**").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/sba/assets/**").permitAll()
+                .antMatchers("/sba/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").successHandler(successHandler).and()
-                .logout().logoutUrl("/logout").and()
+                .formLogin().loginPage("/sba/login").successHandler(successHandler).and()
+                .logout().logoutUrl("/sba/logout").and()
                 .httpBasic().and()
                 .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers(
-                        "/instances",
-                        "/actuator/**"
+                        "/sba/instances",
+                        "/sba/actuator/**"
                 )
     }
 

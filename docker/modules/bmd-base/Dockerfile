@@ -4,7 +4,7 @@ ENV JAVA_OPTS="$JAVA_OPTS -Xmx700m -XX:+UseContainerSupport -XX:+AlwaysActAsServ
 
 WORKDIR "/opt/app"
 
-COPY ./build/*.jar app.jar
+COPY ./bmd-base/build/libs/*.jar app.jar
 
 EXPOSE 8080
 

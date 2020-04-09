@@ -4,7 +4,7 @@ ENV JAVA_OPTS="$JAVA_OPTS -Xmx300m -XX:+UseContainerSupport -XX:+AlwaysActAsServ
 
 WORKDIR "/opt/app"
 
-COPY ./build/*.jar app.jar
+COPY ./boot-admin/build/libs/*.jar app.jar
 
 EXPOSE 8081
 
