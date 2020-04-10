@@ -63,52 +63,54 @@ class BaseVoteService : VoteService {
         val authorsResultMap = TreeMap<LocalDate, MutableList<String>>()
         val withCreatorResultMap = TreeMap<LocalDate, MutableList<String>>()
         var creatorDatesMap = emptyMap<LocalDate, String>()
-        return vr.findById(id).doOnSuccess { vi ->
-              creatorDatesMap = vi.bestDatesForCreator.map { Pair(it, "") }.toMap()
-              vi.votes.forEach { vote ->
-                vote.bestDates.forEach { date ->
-                    authorsResultMap.getOrPut(date) {
-                        mutableListOf()
-                    }.add(vote.author)
-                    if (creatorDatesMap.containsKey(date)) {
-                        withCreatorResultMap.getOrPut(date) {
-                            mutableListOf()
-                        }.add(vote.author)
+        return vr.findById(id)
+                .doOnSuccess { vi ->
+                    vi?.let {
+                        creatorDatesMap = vi.bestDatesForCreator.map { Pair(it, "") }.toMap()
+                        vi.votes.forEach { vote ->
+                            vote.bestDates.forEach { date ->
+                                authorsResultMap.getOrPut(date) {
+                                    mutableListOf()
+                                }.add(vote.author)
+                                if (creatorDatesMap.containsKey(date)) {
+                                    withCreatorResultMap.getOrPut(date) {
+                                        mutableListOf()
+                                    }.add(vote.author)
+                                }
+                            }
+                        }
                     }
+                }.flatMap { vi ->
+                    log.info("Found author dates ${authorsResultMap.size} ${authorsResultMap}")
+
+                    val maxResult = authorsResultMap.maxBy { it.value.size }
+                    log.info("Max result ${maxResult}")
+
+                    val maxCreatorResult = withCreatorResultMap.maxBy { it.value.size }
+                    log.info("Max result ${maxCreatorResult}")
+
+                    // add creator to result map
+                    maxCreatorResult?.key?.let {
+                        maxCreatorResult.value.add(vi.creator)
+                    }
+                    maxResult?.key?.let {
+                        if (creatorDatesMap.containsKey(maxResult.key)) {
+                            maxResult.value.add(vi.creator)
+                        }
+                    }
+
+                    Mono.just(
+                            VoteResult().apply {
+                                bestDay = maxResult?.key
+                                bestDayVoters = maxResult?.value ?: mutableListOf()
+                                bestDayWithCreator = maxCreatorResult?.key
+                                bestDayWithCreatorVoters = maxCreatorResult?.value ?: mutableListOf()
+                                totalVotes = vi.votes.size
+                                creator = vi.creator
+                                description = vi.description
+                            }
+                    )
                 }
-            }
-
-        }.flatMap { vi ->
-            log.info("Found author dates ${authorsResultMap.size} ${authorsResultMap}")
-
-            val maxResult = authorsResultMap.maxBy { it.value.size }
-            log.info("Max result ${maxResult}")
-
-            val maxCreatorResult = withCreatorResultMap.maxBy { it.value.size }
-            log.info("Max result ${maxCreatorResult}")
-
-            // add creator to result map
-            maxCreatorResult?.key?.let {
-                maxCreatorResult.value.add(vi.creator)
-            }
-            maxResult?.key?.let {
-                if (creatorDatesMap.containsKey(maxResult.key)) {
-                    maxResult.value.add(vi.creator)
-                }
-            }
-
-            Mono.just(
-                VoteResult().apply {
-                    bestDay = maxResult?.key
-                    bestDayVoters = maxResult?.value ?: mutableListOf()
-                    bestDayWithCreator = maxCreatorResult?.key
-                    bestDayWithCreatorVoters = maxCreatorResult?.value ?: mutableListOf()
-                    totalVotes = vi.votes.size
-                    creator = vi.creator
-                    description = vi.description
-                }
-            )
-        }
     }
 
 }

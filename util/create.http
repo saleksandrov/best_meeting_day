@@ -1,9 +1,18 @@
-POST http://localhost:8080/vote/start
+#POST http://192.168.99.100/vote/start
+POST /vote/start HTTP/1.1
+Host: localhost:8080
+Referer: http://192.168.99.100/createvote
+Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Cache-Control: no-cache
-Content-Type: application/json
+Origin: http://192.168.99.100
+X-XSRF-TOKEN: bd7f64bb-882e-4705-907d-312c0faf7df9
 
-{"startDate": "01.11.2019", "endDate": "01.12.2019","creator": "Sergey Aleksandrov","bestDatesForCreator": ["11.11.2019", "12.11.2019"]}
+{"startDate":"10.04.2020",
+"endDate":"30.04.2020",
+"creator":"Test",
+"bestDatesForCreator":["23.04.2020"],
+"description":""}
 
 <> 2019-11-19T010513.400.json
 

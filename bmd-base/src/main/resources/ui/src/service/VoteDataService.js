@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const HOST = (typeof window !== 'undefined') ?  window.location.origin.toString() : 'http://localhost:8080';
+export const HOST = (typeof window !== 'undefined') ?  window.location.origin.toString() : 'unknown';
 const VOTE_CREATE_URL = `${HOST}/vote/start`;
 const VOTE_ADD_VOTE_URL = `${HOST}/vote/add`;
 const VOTE_GET_URL = `${HOST}/vote/get`;

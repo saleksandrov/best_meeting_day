@@ -1,5 +1,6 @@
 package ru.asv.bmd.base.web
 
+import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
@@ -11,6 +12,9 @@ import reactor.core.publisher.Mono
 class CustomWebFilter : WebFilter {
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
+        exchange.response.headers += HttpHeaders().apply {
+            accessControlAllowOrigin = "*"
+        }
         return if (exchange.request.uri.path == "/" ||
                 exchange.request.uri.path.startsWith("/addvote") ||
                 exchange.request.uri.path.startsWith("/viewresult") ||

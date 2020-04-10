@@ -18,4 +18,9 @@ class AdminRestService @Autowired constructor(
         return coreService.totalVotes()
     }
 
+    @GetMapping("version")
+    fun getVersion(): Mono<String> {
+        return Mono.just("1.0.2")
+    }
+
 }

@@ -15,7 +15,7 @@ services:
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-base/Dockerfile
-    image: bmd-backend:v1_0_0
+    image: bmd-backend:v1_0_2
     depends_on:
       - bmd-mongo
 
@@ -23,13 +23,13 @@ services:
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-admin/Dockerfile
-    image: bmd-admin:v1
+    image: bmd-admin:v1_0_2
 
   bmd-nginx:
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-nginx/Dockerfile
-    image: bmd-ngix:v1
+    image: bmd-ngix:v1_0_2
     ports:
       - "80:80"
 
