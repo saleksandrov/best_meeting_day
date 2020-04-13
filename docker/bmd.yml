@@ -15,7 +15,9 @@ services:
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-base/Dockerfile
-    image: bmd-backend:v1_0_2
+    image: bmd-backend:v1_0_3
+    volumes:
+      - config-volume:/opt/app/config
     depends_on:
       - bmd-mongo
 
@@ -23,16 +25,25 @@ services:
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-admin/Dockerfile
-    image: bmd-admin:v1_0_2
+    image: bmd-admin:v1_0_3
+    volumes:
+      - config-volume:/opt/app/config
 
   bmd-nginx:
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-nginx/Dockerfile
-    image: bmd-ngix:v1_0_2
+    image: bmd-ngix:v1_0_3
     ports:
       - "80:80"
 
+volumes:
+  config-volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: '/Users/a17540258/IdeaProjects/best_meeting_day/docker/modules'
+      o: bind
 
 
 # Exaple for resource limit

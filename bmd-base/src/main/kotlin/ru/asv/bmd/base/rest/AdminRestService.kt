@@ -20,7 +20,7 @@ class AdminRestService @Autowired constructor(
 
     @GetMapping("version")
     fun getVersion(): Mono<String> {
-        return Mono.just("1.0.2")
+        return Mono.just("1.0.3")
     }
 
 }

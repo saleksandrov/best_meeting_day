@@ -4,10 +4,11 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.PropertySource
+import ru.asv.bmd.base.config.YamlPropertySourceFactory
 
-@PropertySource(value =
-    ["classpath:application.yaml",
-    "file:config/bmd-base/application.yaml"], ignoreResourceNotFound = true)
+@PropertySource(value = ["classpath:bmd-base-config.yaml", "file:config/bmd-base/bmd-base-config.yaml"],
+        factory = YamlPropertySourceFactory::class,
+        ignoreResourceNotFound = true)
 @SpringBootApplication
 open class BaseApplication
 

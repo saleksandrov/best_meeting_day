@@ -5,9 +5,9 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.PropertySource
 
-@PropertySource(value =
-    ["classpath:application.yaml",
-    "file:config/bmd-admin/application.yaml"], ignoreResourceNotFound = true)
+@PropertySource(value = ["classpath:bmd-admin-config.yaml" , "file:config/bmd-admin/bmd-admin-config.yaml"],
+        factory = YamlPropertySourceFactory::class,
+        ignoreResourceNotFound = true)
 @SpringBootApplication
 @EnableAdminServer
 class BootAdminApplication
