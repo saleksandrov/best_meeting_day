@@ -9,13 +9,12 @@ spring:
   boot:
     admin:
       client:
-        url: http://bmd-admin:8081/sba
+        url: http://localhost:8081/sba
         username: admin
         password: admin
   data:
     mongodb:
-      #host: 192.168.99.100
-      host: bmd-mongo
+      host: 192.168.99.100
       port: 27017
       auto-index-creation: false
       authentication-database: admin

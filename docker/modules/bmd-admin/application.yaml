@@ -8,3 +8,8 @@ spring:
     user:
       name: admin
       password: admin
+  boot:
+    admin:
+      context-path: "/sba"
+      ui:
+        public-url: http://192.168.99.100:80/sba
