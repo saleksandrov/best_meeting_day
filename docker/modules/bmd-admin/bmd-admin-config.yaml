@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: boot-admin
+  security:
+    user:
+      name: admin
+      password: admin123
+  boot:
+    admin:
+      context-path: "/sba"
+      ui:
+        public-url: http://192.168.99.100:80/sba
+

@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bmd-base
+  main:
+    allow-bean-definition-overriding: true
+  boot:
+    admin:
+      client:
+        url: http://bmd-admin:8081/sba
+        username: admin
+        password: admin123
+  data:
+    mongodb:
+      host: bmd-mongo
+      port: 27017
+      auto-index-creation: false
+      authentication-database: admin
+      username: dev
+      password: dev
+      database: bmdbase
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
