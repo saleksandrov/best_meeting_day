@@ -29,8 +29,12 @@
         <appender-ref ref="FILE"/>
     </logger>
 
-    <logger name="org.springframework.web" level="info" additivity="false">
+    <logger name="org.springframework" level="info" additivity="false">
         <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="org.springframework.data.mongodb.core.index" level="error" additivity="true">
+        <appender-ref ref="FILE"/>
     </logger>
 
     <root level="info">

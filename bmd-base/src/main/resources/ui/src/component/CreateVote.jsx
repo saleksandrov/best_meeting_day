@@ -9,16 +9,12 @@ import VoteDataService, {HOST} from '../service/VoteDataService';
 import moment from 'moment';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {
-  FacebookIcon,
-  LinkedinIcon,
-  TelegramIcon,
-  WhatsappIcon,
-  EmailIcon,
-  FacebookShareButton,
-  LinkedinShareButton,
-  TelegramShareButton,
-  WhatsappShareButton,
-  EmailShareButton
+    EmailIcon,
+    EmailShareButton,
+    TelegramIcon,
+    TelegramShareButton,
+    WhatsappIcon,
+    WhatsappShareButton
 } from 'react-share';
 
 class CreateVote extends Component {
@@ -105,7 +101,9 @@ class CreateVote extends Component {
     render() {
 
         let linkTOAddVote = `/addvote/${this.state.voteId}`;
+        let linkTOViewResult = `/viewresult/${this.state.voteId}`;
         let urlToAddVote = HOST + linkTOAddVote;
+        let urlToViewResult = HOST + linkTOViewResult;
 
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -123,7 +121,8 @@ class CreateVote extends Component {
                             <p>
                                Скопируйте ID голосования и введите его на <a href="/">странице</a>&nbsp;
                                для добавления голоса или просмотра результатов.
-                               Для удобства вы можете скопировать прямую ссылку для голосования и отправить ее всем участникам.
+                               Для удобства вы можете скопировать прямую ссылку для
+                               голосования/просмотра результатов и отправить ее всем участникам.
                             </p>
 
                             <p>
@@ -134,6 +133,11 @@ class CreateVote extends Component {
                             <CopyToClipboard text={urlToAddVote}>
                                 <button>Скопировать ссылку на голосование</button>
                             </CopyToClipboard>
+                            &nbsp;
+                            <CopyToClipboard text={urlToViewResult}>
+                                <button>Скопировать ссылку просмотра результатов</button>
+                            </CopyToClipboard>
+
                             </p>
                             <p>
                             <TelegramShareButton

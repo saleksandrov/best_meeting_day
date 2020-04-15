@@ -22,7 +22,16 @@ spring:
       password: dev
       database: bmdbase
 
+logging:
+  path: ./logs
+  level:
+    ru.asv.bmd: WARN
+    org.springframework: WARN
+
 management:
+  endpoint:
+    logfile:
+      external_file: ./logs/bmd_base.log
   endpoints:
     web:
       exposure:
