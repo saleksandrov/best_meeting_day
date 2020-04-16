@@ -2,16 +2,19 @@ version: '3.1'
 
 services:
   bmd-mongo:
+    container_name: bmd-mongo
     image: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin111
     volumes:
-      - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+      - mongo-entry-volume:/docker-entrypoint-initdb.d
+      - mongo-data-volume:/data/db
     command: mongod
 
   bmd-backend:
+    restart: always
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-base/Dockerfile
@@ -22,6 +25,7 @@ services:
       - bmd-mongo
 
   bmd-admin:
+    restart: always
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-admin/Dockerfile
@@ -30,6 +34,7 @@ services:
       - config-volume:/opt/app/config
 
   bmd-nginx:
+    restart: always
     build:
       context: ../../best_meeting_day/
       dockerfile: ./docker/modules/bmd-nginx/Dockerfile
@@ -43,6 +48,20 @@ volumes:
     driver_opts:
       type: none
       device: '/Users/a17540258/IdeaProjects/best_meeting_day/docker/modules'
+      o: bind
+
+  mongo-entry-volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: '/Users/a17540258/IdeaProjects/best_meeting_day/docker/mongo-entrypoint'
+      o: bind
+
+  mongo-data-volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: '/Users/a17540258/mongodata'
       o: bind
 
 
