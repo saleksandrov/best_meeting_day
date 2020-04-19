@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import DayPicker, {DateUtils} from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import {Col, Container, Form, Row} from 'react-bootstrap';
-import VoteDataService from '../service/VoteDataService';
+import VoteDataService, {HOST} from '../service/VoteDataService';
 import {Button} from "@material-ui/core";
 import moment from 'moment';
 
@@ -103,6 +103,8 @@ class AddVote extends Component {
     render() {
 
         let {creator, startDate, endDate, isVisible, descr} = this.state;
+        let linkTOViewResult = `/viewresult/${this.state.voteId}`;
+        let urlToViewResult = HOST + linkTOViewResult;
 
         return (
                 <div>
@@ -115,7 +117,11 @@ class AddVote extends Component {
 
                         {
                             this.state.wasSent &&
-                            <div class="alert alert-success">Голос добавлен. ID голосования {this.state.voteId}</div>
+                            <div class="alert alert-success">Голос добавлен. ID голосования {this.state.voteId}
+                            <p>
+                            <a href={urlToViewResult}>Просмотр результатов</a>
+                            </p>
+                            </div>
                         }
 
                         {

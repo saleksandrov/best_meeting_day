@@ -204,7 +204,7 @@ class CreateVote extends Component {
 
                             <Form.Row>
                                 <Form.Group controlId="dates">
-                                    <Form.Label column>Даты</Form.Label>
+                                    <Form.Label column>Выберите подходящие даты</Form.Label>
                                     <Col>
                                         <DayPicker
                                             selectedDays={this.state.selectedDays}
