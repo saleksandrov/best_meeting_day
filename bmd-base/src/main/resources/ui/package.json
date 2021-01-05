@@ -9,7 +9,7 @@
     "@nivo/bar": "^0.61.1",
     "@opd/g2plot-react": "^1.0.0",
     "@randex/material-ui-multiple-dates-picker": "^0.3.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "date-fns": "^2.9.0",
